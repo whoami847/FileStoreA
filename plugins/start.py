@@ -483,69 +483,83 @@ async def bcmd(bot: Bot, message: Message):
 #=====================================================================================##
 # New command handlers added as requested
 @Bot.on_message(filters.command('admin_cmd') & filters.private & admin)
+@Bot.on_message(filters.command('admin_cmd') & filters.private & admin)
 async def admin_cmd(bot: Bot, message: Message):
     reply_text = (
-        "/add_admin - ᴀᴅᴅ ɴᴇᴡ ᴀᴅᴍɪɴ [ᴀᴅᴍɪɴ]\n"
-        "/deladmin - ʀᴇᴍᴏᴠᴇ ᴀᴅᴍɪɴ [ᴀᴅᴍɪɴ]\n"
-        "/admins - ʟɪsᴛ ᴀʟʟ ᴀᴅᴍɪɴs [ᴀᴅᴍɪɴ]"
+        "<b><blockquote>◈ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ᴛᴏ ᴀᴅᴅ, ʀᴇᴍᴏᴠᴇ, ᴀɴᴅ ɢᴇᴛ ᴀ ʟɪꜱᴛ ᴏꜰ ᴀᴅᴍɪɴꜱ ᴄᴏᴍᴍᴀɴᴅꜱ.</blockquote></b>\n\n"
+        "❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "├/add_admin - ᴀᴅᴅ ɴᴇᴡ ᴀᴅᴍɪɴ [ᴀᴅᴍɪɴ]\n"
+        "├/deladmin - ʀᴇᴍᴏᴠᴇ ᴀᴅᴍɪɴ [ᴀᴅᴍɪɴ]\n"
+        "└/admins - ʟɪsᴛ ᴀʟʟ ᴀᴅᴍɪɴs [ᴀᴅᴍɪɴ]"
     )
     await message.reply_text(reply_text)
 
 @Bot.on_message(filters.command('premium_cmd') & filters.private & admin)
 async def premium_cmd(bot: Bot, message: Message):
     reply_text = (
-        "/addpremium - ɢʀᴀɴᴛ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]\n"
-        "/premium_users - ʟɪsᴛ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs [ᴀᴅᴍɪɴ]\n"
-        "/remove_premium - ʀᴇᴠᴏᴋᴇ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]"
+        "<b><blockquote>◈ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅꜱ ᴛᴏ ɢᴇᴛ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ ʀᴇʟᴀᴛᴇᴅ ᴄᴏᴍᴍᴀɴᴅꜱ.</blockquote></b>\n\n"
+        "❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "├/addpremium - ɢʀᴀɴᴛ �ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]\n"
+        "├/remove_premium - ʀᴇᴠᴏᴋᴇ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]\n"
+        "└/premium_users - ʟɪsᴛ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs [ᴀᴅᴍɪɴ]"
     )
     await message.reply_text(reply_text)
 
 @Bot.on_message(filters.command('user_cmd') & filters.private & admin)
 async def user_cmd(bot: Bot, message: Message):
     reply_text = (
-        "/users - ᴠɪᴇᴡ ʙᴏᴛ sᴛᴀᴛɪsᴛɪᴄs [ᴀᴅᴍɪɴ]\n"
-        "/ban - ʙᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]\n"
-        "/unban - ᴜɴʙᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]\n"
-        "/banlist - ʟɪsᴛ ʙᴀɴɴᴇᴅ ᴜsᴇʀs [ᴀᴅᴍɪɴ]"
+        "<b><blockquote>◈ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅꜱ ᴛᴏ ɢᴇᴛ ᴜꜱᴇʀꜱ ʀᴇʟᴀᴛᴇᴅ ᴄᴏᴍᴍᴀɴᴅꜱ.</blockquote></b>\n\n"
+        "❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "├/users - ᴠɪᴇᴡ ʙᴏᴛ sᴛᴀᴛɪsᴛɪᴄs [ᴀᴅᴍɪɴ]\n"
+        "├/ban - ʙᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]\n"
+        "├/unban - ᴜɴʙᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]\n"
+        "└/banlist - ʟɪsᴛ ʙᴀɴɴᴇᴅ ᴜsᴇʀs [ᴀᴅᴍɪɴ]"
     )
     await message.reply_text(reply_text)
 
 @Bot.on_message(filters.command('broadcast_cmd') & filters.private & admin)
 async def broadcast_cmd(bot: Bot, message: Message):
     reply_text = (
-        "/broadcast - ʙʀᴏᴀᴅᴄᴀsᴛ ᴍᴇssᴀɢᴇs ᴛᴏ ᴜsᴇʀs [ᴀᴅᴍɪɴ]\n"
-        "/dbroadcast - ʙʀᴏᴀᴅᴄᴀsᴛ ᴡɪᴛʜ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ [ᴀᴅᴍɪɴ]\n"
-        "/pbroadcast - ᴘɪɴ ʙʀᴏᴀᴅᴄᴀsᴛ ᴛᴏ ᴀʟʟ ᴜsᴇʀs [ᴀᴅᴍɪɴ]"
+        "<b><blockquote>◈ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅꜱ ᴛᴏ ɢᴇᴛ ʙʀᴏᴀᴅᴄᴀsᴛ ᴄᴏᴍᴍᴀɴᴅꜱ.</blockquote></b>\n\n"
+        "❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "├/broadcast - ʙʀᴏᴀᴅᴄᴀsᴛ ᴍᴇssᴀɢᴇs ᴛᴏ ᴜsᴇʀs [ᴀᴅᴍɪɴ]\n"
+        "├/dbroadcast - ʙʀᴏᴀᴅᴄᴀsᴛ ᴡɪᴛʜ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ [ᴀᴅᴍɪɴ]\n"
+        "└/pbroadcast - ᴘɪɴ ʙʀᴏᴀᴅᴄᴀsᴛ ᴛᴏ ᴀʟʟ �ᴜsᴇʀs [ᴀᴅᴍɪɴ]"
     )
     await message.reply_text(reply_text)
 
 @Bot.on_message(filters.command('force_chn_cmd') & filters.private & admin)
 async def force_chn_cmd(bot: Bot, message: Message):
     reply_text = (
-        "/fsub_mode - ᴛᴏɢɢʟᴇ ғᴏʀᴄᴇ-sᴜʙsᴄʀɪʙᴇ [ᴀᴅᴍɪɴ]\n"
-        "/addchnl - ᴀᴅᴅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]\n"
-        "/delchnl - ʀᴇᴍᴏᴠᴇ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]\n"
-        "/listchnl - ᴠɪᴇᴡ ғᴏʀᴄᴇ-sᴜʙ ᴄʹʜᴀɴɴᴇʟs [ᴀᴅᴍɪɴ]"
+        "<b><blockquote>◈ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅꜱ ᴛᴏ ɢᴇᴛ ꜰᴏʀᴄᴇ ꜱᴜʙ ᴄᴏᴍᴍᴀɴᴅꜱ.</blockquote></b>\n\n"
+        "❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "├/fsub_mode - ᴛᴏɢɢʟᴇ ғᴏʀᴄᴇ-sᴜʙsᴄʀɪʙᴇ [ᴀᴅᴍɪɴ]\n"
+        "├/addchnl - ᴀᴅᴅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]\n"
+        "├/delchnl - ʀᴇᴍᴏᴠᴇ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]\n"
+        "└/listchnl - ᴠɪᴇᴡ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs [ᴀᴅᴍɪɴ]"
     )
     await message.reply_text(reply_text)
 
 @Bot.on_message(filters.command('auto_dlt_cmd') & filters.private & admin)
 async def auto_dlt_cmd(bot: Bot, message: Message):
     reply_text = (
-        "/dlt_time - sᴇᴛ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]\n"
-        "/check_dlt_time - ᴄʜᴇᴄᴋ ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]"
+        "<b><blockquote>◈ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅꜱ ᴛᴏ ɢᴇᴛ ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ ᴄᴏᴍᴍᴀɴᴅꜱ.</blockquote></b>\n\n"
+        "❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "├/dlt_time - sᴇᴛ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]\n"
+        "└/check_dlt_time - ᴄʜᴇᴄᴋ ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]"
     )
     await message.reply_text(reply_text)
 
 @Bot.on_message(filters.command('links_cmd') & filters.private & admin)
 async def links_cmd(bot: Bot, message: Message):
     reply_text = (
-        "/batch - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋs ғᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴘᴏsᴛs\n"
-        "/custom_batch - ᴄʀᴇᴀᴛᴇ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ғʀᴏᴍ ᴄʜᴀɴɴᴇʟ/ɢʀᴏᴜᴘ\n"
-        "/genlink - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋ ғᴏʀ ᴀ sɪɴɢʟᴇ ᴘᴏsᴛ"
+        "<b><blockquote>◈ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅꜱ ᴛᴏ ɢᴇᴛ ꜱɪɴɢʟᴇ ꜰɪʟᴇ, ʙᴀᴛᴄʜ ᴀɴᴅ ᴄᴜꜱᴛᴏᴍ ʙᴀᴛᴄʜ ʟɪɴᴋꜱ ᴄᴏᴍᴍᴀɴᴅꜱ.</blockquote></b>\n\n"
+        "❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "├/batch - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋs ғᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴘᴏsᴛs\n"
+        "├/custom_batch - ᴄʀᴇᴀᴛᴇ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ғʀᴏᴍ ᴄʜᴀɴɴᴇʟ/ɢʀᴏᴜᴘ\n"
+        "└/genlink - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋ ғᴏʀ ᴀ sɪɴɢʟᴇ ᴘᴏsᴛ"
     )
     await message.reply_text(reply_text)
-
 #=====================================================================================##
 # Don't Remove Credit @CodeFlix_Bots, @rohit_1888
 # Ask Doubt on telegram @CodeflixSupport
