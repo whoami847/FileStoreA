@@ -9,7 +9,7 @@ from datetime import datetime
 #ᴀɴɪᴍᴇ ʟᴏʀᴅ
 from config import *
 
-name = """A N I M E _ L O R D  イズ  ヒア"""
+name = """A N I M E _ L O R D"""
 
 class Bot(Client):
     def __init__(self):
@@ -69,11 +69,11 @@ class Bot(Client):
         self.LOGGER(__name__).info(f"ʙᴏᴛ ɪs ɴᴏᴡ ᴀʟɪᴠᴇ. ᴛʜᴀɴᴋs ᴛᴏ @ᴡʜᴏ-ᴀᴍ-ɪ")
         self.LOGGER(__name__).info(f"""
 ▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
-      A N I M E _ L O R D  イズ  ヒア
-▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀
-       ◈◈◈◈◈◈ ɪ_s_ʜ_ᴇ_ʀ_ᴇ ◈◈◈◈◈◈  
-              ▼ ᴀᴄᴄᴇssɪɴɢ ▼  
-                 ███████] 99%  
+             A N I M E  L O R D  
+▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀
+        ◈◈◈◈◈◈ ɪ_s_ʜ_ᴇ_ʀ_ᴇ ◈◈◈◈◈◈  
+             ▼  ᴀᴄᴄᴇssɪɴɢ  ▼  
+                ███████] 99%  
 """)  
 
         try:
