@@ -35,7 +35,7 @@ async def short_url(client: Client, message: Message, base64_string):
         ]
         await message.reply_photo(
             photo=SHORTENER_PIC,
-            caption=SHORT_MSG.lower().format(),
+            caption=SHORT_MSG.format(),
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     except IndexError:
@@ -99,9 +99,9 @@ async def start_command(client: Client, message: Message):
             await temp_msg.delete()
         codeflix_msgs = []
         for msg in messages:
-            caption = (CUSTOM_CAPTION.lower().format(previouscaption="" if not msg.caption else msg.caption.html.lower(), 
-                                             filename=msg.document.file_name.lower()) if bool(CUSTOM_CAPTION) and bool(msg.document)
-                       else ("" if not msg.caption else msg.caption.html.lower()))
+            caption = (CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html,
+                                             filename=msg.document.file_name) if bool(CUSTOM_CAPTION) and bool(msg.document)
+                       else ("" if not msg.caption else msg.caption.html))
             reply_markup = msg.reply_markup if DISABLE_CHANNEL_BUTTON else None
             try:
                 copied_msg = await msg.copy(chat_id=user_id, caption=caption, parse_mode=ParseMode.HTML, 
@@ -157,11 +157,11 @@ async def start_command(client: Client, message: Message):
             selected_image = random.choice(RANDOM_IMAGES) if RANDOM_IMAGES else START_PIC
             await message.reply_photo(
                 photo=selected_image,
-                caption=START_MSG.lower().format(
-                    first=message.from_user.first_name.lower(),
-                    last=message.from_user.last_name.lower() if message.from_user.last_name else "",
-                    username=None if not message.from_user.username else '@' + message.from_user.username.lower(),
-                    mention=message.from_user.mention.lower(),
+                caption=START_MSG.format(
+                    first=message.from_user.first_name,
+                    last=message.from_user.last_name if message.from_user.last_name else "",
+                    username=None if not message.from_user.username else '@' + message.from_user.username,
+                    mention=message.from_user.mention,
                     id=message.from_user.id
                 ),
                 reply_markup=reply_markup,
@@ -172,11 +172,11 @@ async def start_command(client: Client, message: Message):
             await asyncio.sleep(0.5)
             await message.reply_photo(
                 photo=START_PIC,
-                caption=START_MSG.lower().format(
-                    first=message.from_user.first_name.lower(),
-                    last=message.from_user.last_name.lower() if message.from_user.last_name else "",
-                    username=None if not message.from_user.username else '@' + message.from_user.username.lower(),
-                    mention=message.from_user.mention.lower(),
+                caption=START_MSG.format(
+                    first=message.from_user.first_name,
+                    last=message.from_user.last_name if message.from_user.last_name else "",
+                    username=None if not message.from_user.username else '@' + message.from_user.username,
+                    mention=message.from_user.mention,
                     id=message.from_user.id
                 ),
                 reply_markup=reply_markup,
@@ -196,7 +196,7 @@ async def not_joined(client: Client, message: Message):
             if not await is_sub(client, user_id, chat_id):
                 try:
                     data = await client.get_chat(chat_id)
-                    name = data.title.lower()
+                    name = data.title
                     link = f"https://t.me/{data.username}" if data.username else (await client.create_chat_invite_link(
                         chat_id=chat_id,
                         expire_date=datetime.utcnow() + timedelta(seconds=FSUB_LINK_EXPIRY) if FSUB_LINK_EXPIRY else None
@@ -213,11 +213,11 @@ async def not_joined(client: Client, message: Message):
             pass
         await message.reply_photo(
             photo=FORCE_PIC,
-            caption=FORCE_MSG.lower().format(
-                first=message.from_user.first_name.lower(),
-                last=message.from_user.last_name.lower() if message.from_user.last_name else "",
-                username=None if not message.from_user.username else '@' + message.from_user.username.lower(),
-                mention=message.from_user.mention.lower(),
+            caption=FORCE_MSG.format(
+                first=message.from_user.first_name,
+                last=message.from_user.last_name if message.from_user.last_name else "",
+                username=None if not message.from_user.username else '@' + message.from_user.username,
+                mention=message.from_user.mention,
                 id=message.from_user.id
             ),
             reply_markup=InlineKeyboardMarkup(buttons),
@@ -232,7 +232,7 @@ async def not_joined(client: Client, message: Message):
 async def check_plan(client: Client, message: Message):
     user_id = message.from_user.id
     status_message = await check_user_plan(user_id)
-    await message.reply_text(status_message.lower())
+    await message.reply_text(status_message)
 
 @Bot.on_message(filters.command('addPremium') & filters.private & admin)
 async def add_premium_user_command(client, msg):
@@ -259,20 +259,20 @@ async def add_premium_user_command(client, msg):
         expiration_time = await add_premium(user_id, time_value, time_unit)
         await msg.reply_text(
             f"ᴜsᴇʀ {user_id} ᴀᴅᴅᴇᴅ ᴀs ᴀ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀ ғᴏʀ {time_value} {time_unit}.\n"
-            f"ᴇxᴘɪʀᴀᴛɪᴏɴ ᴛɪᴍᴇ: {expiration_time.lower()}"
+            f"ᴇxᴘɪʀᴀᴛɪᴏɴ ᴛɪᴍᴇ: {expiration_time.}"
         )
         await client.send_message(
             chat_id=user_id,
             text=(
                 f"ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!\n\n"
                 f"ʏᴏᴜ ʜᴀᴠᴇ ʀᴇᴄᴇɪᴠᴇᴅ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss ғᴏʀ {time_value} {time_unit}.\n"
-                f"ᴇxᴘɪʀᴇs ᴏɴ: {expiration_time.lower()}"
+                f"ᴇxᴘɪʀᴇs ᴏɴ: {expiration_time}"
             ),
         )
     except ValueError:
         await msg.reply_text("ɪɴᴠᴀʟɪᴅ ɪɴᴘᴜᴛ. ᴘʟᴇᴀsᴇ ᴇɴsᴜʀᴇ ᴜsᴇʀ ɪᴅ ᴀɴᴅ ᴛɪᴍᴇ ᴠᴀʟᴜᴇ ᴀʀᴇ ɴᴜᴍʙᴇʀs.")
     except Exception as e:
-        await msg.reply_text(f"ᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ: {str(e).lower()}")
+        await msg.reply_text(f"ᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ: {str(e)}")
 
 @Bot.on_message(filters.command('remove_premium') & filters.private & admin)
 async def pre_remove_user(client: Client, msg: Message):
@@ -303,8 +303,8 @@ async def list_premium_users_command(client, message):
                 await collection.delete_one({"user_id": user_id})
                 continue
             user_info = await client.get_users(user_id)
-            username = user_info.username.lower() if user_info.username else "no username"
-            mention = user_info.mention.lower()
+            username = user_info.username if user_info.username else "no username"
+            mention = user_info.mention
             days, hours, minutes, seconds = (
                 remaining_time.days,
                 remaining_time.seconds // 3600,
@@ -316,12 +316,12 @@ async def list_premium_users_command(client, message):
                 f"ᴜsᴇʀ ɪᴅ: {user_id}\n"
                 f"ᴜsᴇʀ: @{username}\n"
                 f"ɴᴀᴍᴇ: {mention}\n"
-                f"ᴇxᴘɪʀʏ: {expiry_info.lower()}"
+                f"ᴇxᴘɪʀʏ: {expiry_info}"
             )
         except Exception as e:
             premium_user_list.append(
                 f"ᴜsᴇʀ ɪᴅ: {user_id}\n"
-                f"ᴇʀʀᴏʀ: ᴜɴᴀʙʟᴇ ᴛᴏ ғᴇᴛᴄʜ ᴜsᴇʀ ᴅᴇᴛᴀɪʟs ({str(e).lower()})"
+                f"ᴇʀʀᴏʀ: ᴜɴᴀʙʟᴇ ᴛᴏ ғᴇᴛᴄʜ ᴜsᴇʀ ᴅᴇᴛᴀɪʟs ({str(e)})"
             )
     if len(premium_user_list) == 1:
         await message.reply_text("ɴᴏ ᴀᴄᴛɪᴠᴇ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs ғᴏᴜɴᴅ ɪɴ ᴍʏ ᴅᴀᴛᴀʙᴀsᴇ.")
@@ -336,7 +336,7 @@ async def total_verify_count_cmd(client, message: Message):
 @Bot.on_message(filters.command('commands') & filters.private & admin)
 async def bcmd(bot: Bot, message: Message):        
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
-    await message.reply_text(text=CMD_TXT.lower(), reply_markup=reply_markup, quote=True)
+    await message.reply_text(text=CMD_TXT, reply_markup=reply_markup, quote=True)
 
 @Bot.on_message(filters.command('admin_cmd') & filters.private & admin)
 async def admin_cmd(bot: Bot, message: Message):
