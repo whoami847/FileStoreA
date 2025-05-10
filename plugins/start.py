@@ -1,3 +1,13 @@
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
+
 import asyncio
 import os
 import random
@@ -19,7 +29,7 @@ from database.db_premium import *
 
 # Define emoji reactions and sticker
 EMOJI_MODE = True
-REACTIONS = ["👍", "😍", "🔥", "🎉", "❤️"]
+REACTIONS = ["👍", "😍", "🔥", "🎉", "❤️", "⚡"]
 STICKER_ID = "CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ"
 
 BAN_SUPPORT = f"{BAN_SUPPORT}"
@@ -97,7 +107,7 @@ async def start_command(client: Client, message: Message):
             return
         finally:
             await temp_msg.delete()
-        codeflix_msgs = []
+        animelord_msgs = []
         for msg in messages:
             caption = (CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html,
                                              filename=msg.document.file_name) if bool(CUSTOM_CAPTION) and bool(msg.document)
@@ -106,12 +116,12 @@ async def start_command(client: Client, message: Message):
             try:
                 copied_msg = await msg.copy(chat_id=user_id, caption=caption, parse_mode=ParseMode.HTML, 
                                             reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
-                codeflix_msgs.append(copied_msg)
+                animelord_msgs.append(copied_msg)
             except FloodWait as e:
                 await asyncio.sleep(e.x)
                 copied_msg = await msg.copy(chat_id=user_id, caption=caption, parse_mode=ParseMode.HTML, 
                                             reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
-                codeflix_msgs.append(copied_msg)
+                animelord_msgs.append(copied_msg)
             except Exception as e:
                 print(f"ғᴀɪʟᴇᴅ ᴛᴏ sᴇɴᴅ ᴍᴇssᴀɢᴇ: {e}")
                 pass
@@ -120,7 +130,7 @@ async def start_command(client: Client, message: Message):
                 f"ᴛʜɪs ғɪʟᴇ ᴡɪʟʟ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ ɪɴ {get_exp_time(FILE_AUTO_DELETE).lower()}. ᴘʟᴇᴀsᴇ sᴀᴠᴇ ᴏʀ ғᴏʀᴡᴀʀᴅ ɪᴛ ᴛᴏ ʏᴏᴜʀ sᴀᴠᴇᴅ ᴍᴇssᴀɢᴇs ʙᴇғᴏʀᴇ ɪᴛ ɢᴇᴛs ᴅᴇʟᴇᴛᴇᴅ."
             )
             await asyncio.sleep(FILE_AUTO_DELETE)
-            for snt_msg in codeflix_msgs:    
+            for snt_msg in animelord_msgs:    
                 if snt_msg:
                     try:    
                         await snt_msg.delete()  
@@ -149,7 +159,7 @@ async def start_command(client: Client, message: Message):
         await asyncio.sleep(1)
         await m.delete()
         reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("ᴍᴏʀᴇ ᴄʜᴀɴɴᴇʟs", url="https://t.me/Nova_Flix/50")],
+            [InlineKeyboardButton("ᴍᴏʀᴇ ᴄʜᴀɴɴᴇʟs", url="https://t.me/Anime_Lord_List")],
             [InlineKeyboardButton("ᴀʙᴏᴜᴛ", callback_data="about"), InlineKeyboardButton("ʜᴇʟᴘ", callback_data="help")]
         ])
         try:
@@ -206,7 +216,7 @@ async def not_joined(client: Client, message: Message):
                     await temp.edit(f"ᴄʜᴇᴄᴋɪɴɢ {count}...")
                 except Exception as e:
                     print(f"ᴇʀʀᴏʀ ᴡɪᴛʜ ᴄʜᴀᴛ {chat_id}: {e}")
-                    return await temp.edit(f"ᴇʀʀᴏʀ, ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ @rohit_1888\nʀᴇᴀsᴏɴ: {e}")
+                    return await temp.edit(f"ᴇʀʀᴏʀ, ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ @Mehediyt69\nʀᴇᴀsᴏɴ: {e}")
         try:
             buttons.append([InlineKeyboardButton(text='ᴛʀʏ ᴀɢᴀɪɴ', url=f"https://t.me/{client.username}?start={message.command[1]}")])
         except IndexError:
@@ -286,10 +296,19 @@ async def pre_remove_user(client: Client, msg: Message):
     except ValueError:
         await msg.reply_text("ᴜsᴇʀ ɪᴅ ᴍᴜsᴛ ʙᴇ ᴀɴ ɪɴᴛᴇɢᴇʀ ᴏʀ ɴᴏᴛ ᴀᴠᴀɪʟᴀʙʟᴇ ɪɴ ᴅᴀᴛᴀʙᴀsᴇ.")
 
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+
 @Bot.on_message(filters.command('premium_users') & filters.private & admin)
 async def list_premium_users_command(client, message):
     from pytz import timezone
-    ist = timezone("Asia/Kolkata")
+    ist = timezone("Asia/Dhaka")
     premium_users_cursor = collection.find({})
     premium_user_list = ['ᴀᴄᴛɪᴠᴇ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs ɪɴ ᴅᴀᴛᴀʙᴀsᴇ:']
     current_time = datetime.now(ist)
@@ -417,8 +436,19 @@ async def links_cmd(bot: Bot, message: Message):
         "ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ sɪɴɢʟᴇ ғɪʟᴇ, ʙᴀᴛᴄʜ ᴀɴᴅ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ʟɪɴᴋs ᴄᴏᴍᴍᴀɴᴅs.\n\n"
         "ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:\n"
         "- /batch - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋs ғᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴘᴏsᴛs\n"
+        "- /flink - ꜱᴇᴛ ᴀᴜᴛᴏ ʙᴀᴛᴄʜ ꜰᴏʀᴍᴀᴛ\n"
         "- /custom_batch - ᴄʀᴇᴀᴛᴇ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ғʀᴏᴍ ᴄʜᴀɴɴᴇʟ/ɢʀᴏᴜᴘ\n"
         "- /genlink - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋ ғᴏʀ ᴀ sɪɴɢʟᴇ ᴘᴏsᴛ"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
+
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
