@@ -62,10 +62,10 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 [InlineKeyboardButton("ᴀʙᴏᴜᴛ", callback_data="about"), InlineKeyboardButton("ʜᴇʟᴘ", callback_data="help")]
             ])
             caption = START_MSG.format(
-                first=user.first_name.lower(),
-                last=user.last_name.lower() if user.last_name else "",
-                username=None if not user.username else '@' + user.username.lower(),
-                mention=user.mention.lower(),
+                first=user.first_name,
+                last=user.last_name if user.last_name else "",
+                username=None if not user.username else '@' + user.username,
+                mention=user.mention,
                 id=user.id
             )
             await query.message.edit_media(
@@ -90,7 +90,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 f"● {PRICE3}  ғᴏʀ 3 ᴍᴏɴᴛʜs ᴘʀɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n"
                 f"● {PRICE4}  ғᴏʀ 6 ᴍᴏɴᴛʜs ᴘʀɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n"
                 f"● {PRICE5}  ғᴏʀ 1 ʏᴇᴀʀ ᴘʀɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n\n"
-                f"💵 ᴀsᴋ ᴜᴘɪ ɪᴅ ᴛᴏ ᴀᴅᴍɪɴ ᴀɴᴅ ᴘᴀʏ ᴛʜᴇʀᴇ -  <code>{UPI_ID.lower()}</code>\n\n\n"
+                f"💵 ᴀsᴋ ᴜᴘɪ ɪᴅ ᴛᴏ ᴀᴅᴍɪɴ ᴀɴᴅ ᴘᴀʏ ᴛʜᴇʀᴇ -  <code>{UPI_ID}</code>\n\n\n"
                 f"♻️ ᴘᴀʏᴍᴇɴᴛ ʏᴏᴜ ᴡɪʟʟ ɢᴇᴛ ɪɴsᴛᴀɴᴛ ᴍᴇᴍʙᴇʀsʜɪᴘ \n\n\n"
                 f"‼️ ᴍᴜsᴛ sᴇɴᴅ sᴄʀᴇᴇɴsʜᴏᴛ ᴀғᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ & ɪғ ᴀɴʏᴏɴᴇ ᴡᴀɴᴛ ᴄᴜsᴛᴏᴍ ᴛɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ ᴛʜᴇɴ ᴀsᴋ ᴀᴅᴍɪɴ"
             ),
@@ -186,3 +186,14 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             text = f"ᴄᴜʀʀᴇɴᴛ {type} ɪᴍᴀɢᴇs: {', '.join(map(str, nums))}\nᴛᴏ ʀᴇᴍᴏᴠᴇ ᴀ sɪɴɢʟᴇ ɪᴍᴀɢᴇ, ᴜsᴇ /rev_{type} <number>\nᴛᴏ ʀᴇᴍᴏᴠᴇ ᴀʟʟ, ᴜsᴇ /rev_all_{type}"
             await query.message.reply_text(text)
         await query.answer()
+
+
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
