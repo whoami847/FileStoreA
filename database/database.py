@@ -1,5 +1,15 @@
 #Aɴɪᴍᴇ Lᴏʀᴅ
 #Who-Am-I
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+
+
 
 import motor, asyncio
 import motor.motor_asyncio
@@ -32,7 +42,7 @@ def new_user(id):
         }
     }
 
-class Rohit:
+class Mehedi:
 
     def __init__(self, DB_URI, DB_NAME):
         self.dbclient = motor.motor_asyncio.AsyncIOMotorClient(DB_URI)
@@ -262,4 +272,15 @@ class Rohit:
         return result[0]["total"] if result else 0
 
 
-db = Rohit(DB_URI, DB_NAME)
+db = Mehedi(DB_URI, DB_NAME)
+
+
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
