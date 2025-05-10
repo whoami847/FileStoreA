@@ -1,3 +1,13 @@
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
+
 import motor.motor_asyncio
 from config import DB_URI, DB_NAME
 from pytz import timezone
@@ -19,7 +29,7 @@ async def remove_premium(user_id):
 
 # Remove expired users
 async def remove_expired_users():
-    ist = timezone("Asia/Kolkata")
+    ist = timezone("Asia/Dhaka")
     current_time = datetime.now(ist)
 
     async for user in collection.find({}):
@@ -39,7 +49,7 @@ async def remove_expired_users():
 # List active premium users
 async def list_premium_users():
     # Define IST timezone
-    ist = timezone("Asia/Kolkata")
+    ist = timezone("Asia/Dhaka")
 
     # Fetch all premium users from the collection
     premium_users = collection.find({})
@@ -89,7 +99,7 @@ async def add_premium(user_id, time_value, time_unit):
     time_unit = time_unit.lower()
 
     # Get IST timezone
-    ist = timezone("Asia/Kolkata")
+    ist = timezone("Asia/Dhaka")
 
     # Calculate expiration time
     now = datetime.now(ist)
@@ -132,10 +142,10 @@ async def check_user_plan(user_id):
     if user:
         expiration_timestamp = user["expiration_timestamp"]
         # Convert expiration timestamp to a timezone-aware datetime object in IST
-        expiration_time = datetime.fromisoformat(expiration_timestamp).astimezone(timezone("Asia/Kolkata"))
+        expiration_time = datetime.fromisoformat(expiration_timestamp).astimezone(timezone("Asia/Dhaka"))
         
         # Calculate the remaining time
-        remaining_time = expiration_time - datetime.now(timezone("Asia/Kolkata"))
+        remaining_time = expiration_time - datetime.now(timezone("Asia/Dhaka"))
         
         if remaining_time.total_seconds() > 0:  # If the user is still active
             # Format the remaining time
@@ -151,3 +161,14 @@ async def check_user_plan(user_id):
             return "Your premium plan has expired."
     else:
         return "You do not have a premium plan."
+
+
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
