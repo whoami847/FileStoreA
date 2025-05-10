@@ -27,7 +27,13 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 [InlineKeyboardButton('ʜᴏᴍᴇ', callback_data='home'),
                  InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data='close')]
             ])
-            caption = HELP_TXT
+            caption = HELP_TXT.format(
+                first=user.first_name,
+                last=user.last_name if user.last_name else "",
+                username=None if not user.username else '@' + user.username,
+                mention=user.mention,
+                id=user.id
+            )
             await query.message.edit_media(
                 media=InputMediaPhoto(media=selected_image, caption=caption),
                 reply_markup=reply_markup
@@ -44,7 +50,13 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 [InlineKeyboardButton('ʜᴏᴍᴇ', callback_data='home'),
                  InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data='close')]
             ])
-            caption = ABOUT_TXT
+            caption = ABOUT_TXT.format(
+                first=user.first_name,
+                last=user.last_name if user.last_name else "",
+                username=None if not user.username else '@' + user.username,
+                mention=user.mention,
+                id=user.id
+            )
             await query.message.edit_media(
                 media=InputMediaPhoto(media=selected_image, caption=caption),
                 reply_markup=reply_markup
@@ -74,7 +86,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             )
         except Exception as e:
             print(f"ᴇʀʀᴏʀ ɪɴ ʜᴏᴍᴇ ᴄᴀʟʟʙᴀᴄᴋ: {e}")
-            await query.message.edit_text("ᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ʀᴇᴛᴜʰʀɴɪɴɢ ᴛᴏ ʜᴏᴍᴇ.")
+            await query.message.edit_text("ᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ʀᴇᴛᴜʜʀɴɪɴɢ ᴛᴏ ʜᴏᴍᴇ.")
         await query.answer()
 
     elif data == "premium":
