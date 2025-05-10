@@ -73,7 +73,7 @@ async def batch(client: Client, message: Message):
     while True:
         try:
             first_message = await client.ask(
-                text=to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Forward the first message from db channel (with quotes).</b>\nOr send the db channel post link\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                text=to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Forward the first message from db channel (with quotes).\nOr send the db channel post link\n</b></blockquote><b>━━━━━━━━━━━━━━━━━━</b>"),
                 chat_id=message.from_user.id,
                 filters=(filters.forwarded | (filters.text & ~filters.forwarded)),
                 timeout=60,
@@ -87,7 +87,7 @@ async def batch(client: Client, message: Message):
             break
         else:
             await first_message.reply(
-                to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ Error: This forwarded post is not from my db channel or this link is not valid.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ Error: This forwarded post is not from my db channel or this link is not valid.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
                 quote=True,
                 parse_mode=ParseMode.HTML
             )
@@ -96,7 +96,7 @@ async def batch(client: Client, message: Message):
     while True:
         try:
             second_message = await client.ask(
-                text=to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Forward the last message from db channel (with quotes).</b>\nOr send the db channel post link\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                text=to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Forward the last message from db channel (with quotes).\nOr send the db channel post link\n</b></blockquote><b>━━━━━━━━━━━━━━━━━━</b>"),
                 chat_id=message.from_user.id,
                 filters=(filters.forwarded | (filters.text & ~filters.forwarded)),
                 timeout=60,
@@ -121,7 +121,7 @@ async def batch(client: Client, message: Message):
     link = f"https://t.me/{client.username}?start={base64_string}"
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🔁 Share URL", url=f'https://telegram.me/share/url?url={link}')]])
     await second_message.reply_text(
-        to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Here is your link:</b>\n\n{link}\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+        to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Here is your link:</b></blockquote>\n\n{link}\n<b>━━━━━━━━━━━━━━━━━━</b>"),
         quote=True,
         reply_markup=reply_markup,
         parse_mode=ParseMode.HTML
@@ -139,7 +139,7 @@ async def link_generator(client: Client, message: Message):
     while True:
         try:
             channel_message = await client.ask(
-                text=to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Forward message from the db channel (with quotes).</b>\nOr send the db channel post link\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                text=to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Forward message from the db channel (with quotes).\nOr send the db channel post link\n</b></blockquote><b>━━━━━━━━━━━━━━━━━━</b>"),
                 chat_id=message.from_user.id,
                 filters=(filters.forwarded | (filters.text & ~filters.forwarded)),
                 timeout=60,
@@ -153,7 +153,7 @@ async def link_generator(client: Client, message: Message):
             break
         else:
             await channel_message.reply(
-                to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ Error: This forwarded post is not from my db channel or this link is not valid.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ Error: This forwarded post is not from my db channel or this link is not valid.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
                 quote=True,
                 parse_mode=ParseMode.HTML
             )
@@ -163,7 +163,7 @@ async def link_generator(client: Client, message: Message):
     link = f"https://t.me/{client.username}?start={base64_string}"
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🔁 Share URL", url=f'https://telegram.me/share/url?url={link}')]])
     await channel_message.reply_text(
-        to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Here is your link:</b>\n\n{link}\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+        to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Here is your link:</b></blockquote>\n\n{link}\n<b>━━━━━━━━━━━━━━━━━━</b>"),
         quote=True,
         reply_markup=reply_markup,
         parse_mode=ParseMode.HTML
@@ -182,7 +182,7 @@ async def custom_batch(client: Client, message: Message):
     STOP_KEYBOARD = ReplyKeyboardMarkup([["stop"]], resize_keyboard=True)
 
     await message.reply(
-        to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Send all messages you want to include in batch.</b>\n\nPress <b>Stop</b> when you're done.\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+        to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Send all messages you want to include in batch.\n\nPress Stop when you're done.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
         reply_markup=STOP_KEYBOARD,
         parse_mode=ParseMode.HTML
     )
@@ -191,7 +191,7 @@ async def custom_batch(client: Client, message: Message):
         try:
             user_msg = await client.ask(
                 chat_id=message.chat.id,
-                text=to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Waiting for files/messages...</b>\nPress <b>Stop</b> to finish.\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                text=to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Waiting for files/messages...\nPress Stop to finish.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
                 timeout=60,
                 parse_mode=ParseMode.HTML
             )
@@ -206,11 +206,11 @@ async def custom_batch(client: Client, message: Message):
             sent = await user_msg.copy(client.db_channel.id, disable_notification=True)
             collected.append(sent.id)
         except Exception as e:
-            await message.reply(to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ Failed to store a message:</b>\n<code>{e}</code>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
+            await message.reply(to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ Failed to store a message:</b></blockquote>\n<code>{e}</code>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
             print(to_small_caps_with_html(f"error storing message in custom_batch: {e}"))
             continue
 
-    await message.reply(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>✅ Batch collection complete.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"), reply_markup=ReplyKeyboardRemove(), parse_mode=ParseMode.HTML)
+    await message.reply(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>✅ Batch collection complete.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"), reply_markup=ReplyKeyboardRemove(), parse_mode=ParseMode.HTML)
 
     if not collected:
         await message.reply(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ No messages were added to batch.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
@@ -224,7 +224,7 @@ async def custom_batch(client: Client, message: Message):
 
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🔁 Share URL", url=f'https://telegram.me/share/url?url={link}')]])
     await message.reply(
-        to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Here is your custom batch link:</b>\n\n{link}\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+        to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Here is your custom batch link:</b></blockquote>\n\n{link}\n<b>━━━━━━━━━━━━━━━━━━</b>"),
         reply_markup=reply_markup,
         parse_mode=ParseMode.HTML
     )
@@ -267,7 +267,7 @@ async def flink_command(client: Client, message: Message):
 async def show_flink_main_menu(client: Client, message: Message, edit: bool = False):
     try:
         current_format = flink_user_data[message.from_user.id]['format'] or "Not set"
-        text = to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Formatted Link Generator</b>\n\nCurrent format:\n<code>{current_format}</code>\n<b>━━━━━━━━━━━━━━━━━━</b>")
+        text = to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Formatted Link Generator</b>\n\n<blockquote><b>Current format:</b></blockquote>\n<blockquote><code>{current_format}</code></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>")
         
         buttons = [
             [
@@ -323,11 +323,12 @@ async def flink_set_format_callback(client: Client, query: CallbackQuery):
             "<b>━━━━━━━━━━━━━━━━━━</b>\n"
             "<blockquote><b>Please send your format in this pattern:</b></blockquote>\n\n"
             "<blockquote>Example</blockquote>:\n\n"
-            "<code>360p = 2, 720p = 2, 1080p = 2, 4k = 2, HDRIP = 2</code>\n\n"
-            "<b>Meaning:</b>\n"
-            "- 360p = 2 → 2 video files for 360p quality\n"
-            "- If stickers/gifs follow, they will be included in the link\n"
-            "- Only these qualities will be created\n\n"
+            "<blockquote>don't copy this. please type</blockquote>:\n"
+            "<blockquote><code>360p = 2, 720p = 2, 1080p = 2, 4k = 2, HDRIP = 2</code></blockquote>\n\n"
+            "<blockquote><b>Meaning:</b></blockquote>\n"
+            "<b>- 360p = 2 → 2 video files for 360p quality</b>\n"
+            "<blockquote><b>- If stickers/gifs follow, they will be included in the link\n"
+            "- Only these qualities will be created</b></blockquote>\n\n"
             "<b>Send the format in the next message (no need to reply).</b>\n"
             "<b>━━━━━━━━━━━━━━━━━━</b>"
         )
@@ -369,12 +370,12 @@ async def handle_format_input(client: Client, message: Message):
             format_text = message.text.strip()
             flink_user_data[user_id]['format'] = format_text
             flink_user_data[user_id]['awaiting_format'] = False
-            await message.reply_text(to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<b>✅ Format saved successfully:</b>\n<code>{format_text}</code>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
+            await message.reply_text(to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>✅ Format saved successfully:</b></blockquote>\n<code>{format_text}</code>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
             await show_flink_main_menu(client, message)
         else:
             logger.info(to_small_caps_with_html(f"format input ignored for user {message.from_user.id} - not awaiting format"))
             await message.reply_text(
-                to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ Please use the 'Set Format' option first and provide a valid format</b>\nExample: <code>360p = 2, 720p = 1</code>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ Please use the 'Set Format' option first and provide a valid format</b></blockquote>\n<blockquote>Example:</blockquote> <code>360p = 2, 720p = 1</code>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
                 parse_mode=ParseMode.HTML
             )
     except Exception as e:
@@ -406,8 +407,8 @@ async def flink_start_process_callback(client: Client, query: CallbackQuery):
         new_text = to_small_caps_with_html(
             "<b>━━━━━━━━━━━━━━━━━━</b>\n"
             "<blockquote><b>Send the first post link from db channel:</b>\n"
-            "<b>Forward a message from the db channel or send its direct link (e.g., <code>t.me/channel/123</code>)</b></blockquote>.\n\n"
-            "<b>Ensure files are in sequence without gaps.</ bowel>\n\n"
+            "<b>Forward a message from the db channel or send its direct link (e.g., <code>t.me/channel/123</code>).</b></blockquote>\n\n"
+            "<blockquote><b>Ensure files are in sequence without gaps.</ bowel></blockquote>\n\n"
             "<b>Send the link or forwarded message in the next message (no need to reply).</b>\n"
             "<b>━━━━━━━━━━━━━━━━━━</b>"
         )
@@ -473,14 +474,14 @@ async def handle_db_post_input(client: Client, message: Message):
         if user_id not in flink_user_data or not flink_user_data[user_id].get('awaiting_db_post'):
             logger.info(to_small_caps_with_html(f"db post input ignored for user {user_id} - not awaiting db channel input"))
             await message.reply_text(
-                to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ Please use the 'Start Process' option first and provide a valid forwarded message or link from the db channel.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ Please use the 'Start Process' option first and provide a valid forwarded message or link from the db channel.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
                 parse_mode=ParseMode.HTML
             )
             return
 
         msg_id = await get_message_id(client, message)
         if not msg_id:
-            await message.reply(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ Invalid db channel post! Ensure it's a valid forwarded message or link from the db channel.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
+            await message.reply(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ Invalid db channel post! Ensure it's a valid forwarded message or link from the db channel.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
             return
                 
         format_str = flink_user_data[message.from_user.id]['format']
@@ -517,7 +518,7 @@ async def handle_db_post_input(client: Client, message: Message):
             if missing_files:
                 logger.error(to_small_caps_with_html(f"missing media for {quality}: {missing_files}"))
                 await message.reply(
-                    to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ Missing video media for {quality} at message IDs:</b> <code>{missing_files}</code>\nEnsure all files are in sequence.\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                    to_small_caps_with_html(f"<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ Missing video media for {quality} at message IDs:</b> <code>{missing_files}</code>\n<b>Ensure all files are in sequence.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
                     parse_mode=ParseMode.HTML
                 )
                 return
@@ -619,7 +620,7 @@ async def flink_generate_final_output(client: Client, message: Message):
             )
         else:
             output_msg = await message.reply(
-                text=caption if caption else to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Here are your download buttons:</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+                text=caption if caption else to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n</blockquote><b>Here are your download buttons:</blockquote></b>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
                 reply_markup=InlineKeyboardMarkup(buttons),
                 parse_mode=ParseMode.HTML
             )
@@ -699,7 +700,7 @@ async def flink_add_image_callback(client: Client, query: CallbackQuery):
             return
 
         current_text = query.message.text if query.message.text else ""
-        new_text = to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Send the image:</b>\n<b>━━━━━━━━━━━━━━━━━━</b>")
+        new_text = to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Send the image:</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>")
         
         if current_text != new_text:
             await query.message.edit_text(new_text, parse_mode=ParseMode.HTML)
@@ -709,7 +710,7 @@ async def flink_add_image_callback(client: Client, query: CallbackQuery):
         await query.answer(to_small_caps_with_html("Send image"))
     except Exception as e:
         logger.error(to_small_caps_with_html(f"error in flink_add_image_callback: {e}"))
-        await query.message.edit_text(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ An error occurred while adding image.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
+        await query.message.edit_text(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ An error occurred while adding image.</blockquote></b>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
 #
 # Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
 #
@@ -750,7 +751,7 @@ async def handle_image_input(client: Client, message: Message):
 
         flink_user_data[user_id]['edit_data']['image'] = message.photo.file_id
         await message.reply_text(
-            to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>✅ Image saved successfully.</b>\nType a caption if needed, or proceed with 'Done'.\n<b>━━━━━━━━━━━━━━━━━━</b>"),
+            to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>✅ Image saved successfully.</b></blockquote>\n<blockquote>Type a caption if needed, or proceed with 'Done'.</blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"),
             parse_mode=ParseMode.HTML
         )
         await flink_generate_final_output(client, message)
@@ -777,16 +778,16 @@ async def flink_add_caption_callback(client: Client, query: CallbackQuery):
         user_id = query.from_user.id
         flink_user_data[user_id]['awaiting_caption'] = True
         caption_prompt_text = (
-            to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>Type your caption:</b>\n\n")
-            + "<b>Example:</b>\n"
-            "<code>ᴛɪᴛʟᴇ- BLACK CLOVER\n"
+            to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>Type your caption:</b></blockquote>\n\n")
+            + "<blockquote><b>Example:</b></blockquote>\n\n"
+            "<blockquote><code>ᴛɪᴛʟᴇ- BLACK CLOVER\n"
             "Aᴜᴅɪᴏ TʀᴀᴄK- Hɪɴᴅɪ Dᴜʙʙᴇᴅ\n\n"
             "Qᴜᴀʟɪᴛʏ - 360ᴘ, 720ᴘ, 1080ᴘ\n\n"
             "Eᴘɪsᴏᴅᴇ - 01 & S1 Uᴘʟᴏᴀᴅᴇᴅ\n\n"
             "Aʟʟ Qᴜᴀʟɪᴛʏ - ( Hɪɴᴅɪ Dᴜʙʙᴇᴅ )\n"
             "━━━━━━━━━━━━━━━━━━\n"
-            "Cʟɪᴄᴋ Hᴇʀᴇ Tᴏ Dᴏᴡɴʟᴏᴀᴅ | Eᴘ - 01 & S1</code>\n\n"
-            + to_small_caps_with_html("<b>Reply to this message with your caption.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>")
+            "Cʟɪᴄᴋ Hᴇʀᴇ Tᴏ Dᴏᴡɴʟᴏᴀᴅ | Eᴘ - 01 & S1</code></blockquote>\n\n"
+            + to_small_caps_with_html("<blockquote><b>Reply to this message with your caption.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>")
         )
         
         caption_prompt_msg = await query.message.reply_text(caption_prompt_text, parse_mode=ParseMode.HTML)
@@ -832,7 +833,7 @@ async def handle_caption_input(client: Client, message: Message):
             flink_user_data[user_id]['edit_data'] = {}
         flink_user_data[user_id]['edit_data']['caption'] = message.text
         flink_user_data[user_id]['awaiting_caption'] = False
-        await message.reply_text(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>✅ Caption saved successfully.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
+        await message.reply_text(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>✅ Caption saved successfully.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
         await flink_generate_final_output(client, message)
     except Exception as e:
         logger.error(to_small_caps_with_html(f"error in handle_caption_input: {e}"))
@@ -856,7 +857,7 @@ async def flink_done_output_callback(client: Client, query: CallbackQuery):
 
         user_id = query.from_user.id
         if user_id not in flink_user_data or 'links' not in flink_user_data[user_id]:
-            await query.message.edit_text(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<b>❌ No links found. Please start the process again using /flink.</b>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
+            await query.message.edit_text(to_small_caps_with_html("<b>━━━━━━━━━━━━━━━━━━</b>\n<blockquote><b>❌ No links found. Please start the process again using /flink.</b></blockquote>\n<b>━━━━━━━━━━━━━━━━━━</b>"), parse_mode=ParseMode.HTML)
             return
 
         links = flink_user_data[user_id]['links']
