@@ -13,7 +13,6 @@ from shortzy import Shortzy
 from pyrogram.errors import FloodWait
 from database.database import *
 
-
 #
 # Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
 #
@@ -50,7 +49,7 @@ async def is_subscribed(client, user_id):
     if not channel_ids:
         return True
 
-    if user_id == OWNER_ID:
+    if user_id == OWNER_ID or await db.admin_exist(user_id):  # Added admin check
         return True
 
     for cid in channel_ids:
@@ -230,4 +229,4 @@ admin = filters.create(check_admin)
 # Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
 #
 # All rights reserved.
-
+#
