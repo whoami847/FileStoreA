@@ -54,8 +54,8 @@
 
 ### Token Variables
 
-* `SHORTLINK_URL` = Your shortner Url ( ex. "inshorturl.com")
-* `SHORTLINK_API` = Your shortner API (ex. "PUIAQBIFrydvLhIzAOeGV8yZppu")
+* `SHORTLINK_URL` = (OPTIONAL) Your shortner Url ( ex. "inshorturl.com")
+* `SHORTLINK_API` = (OPTIONAL) Your shortner API (ex. "PUIAQBIFrydvLhIzAOeGV8yZppu")
 </details>
 
 <details><summary><b> - ᴄᴏᴍᴍᴀɴᴅs:</b></summary>
@@ -64,6 +64,7 @@
 ```
 start - sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ ᴏʀ ɢᴇᴛ ᴘᴏsᴛs
 batch - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋs ғᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴘᴏsᴛs
+flink - ꜱᴇᴛ ᴀᴜᴛᴏ ʙᴀᴛᴄʜ ꜰᴏʀᴍᴀᴛ
 custom_batch - ᴄʀᴇᴀᴛᴇ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ғʀᴏᴍ ᴄʜᴀɴɴᴇʟ/ɢʀᴏᴜᴘ
 genlink - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋ ғᴏʀ ᴀ sɪɴɢʟᴇ ᴘᴏsᴛ
 myplan - ᴄʜᴇᴄᴋ ᴘʀᴇᴍɪᴜᴍ sᴛᴀᴛᴜs
@@ -102,25 +103,25 @@ remove_premium - ʀᴇᴠᴏᴋᴇ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍ
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʜᴇʀᴏᴋᴜ 」─
 </h3>
 
-<p align="center"><a href="https://heroku.com/deploy?template=https://github.com/Codeflix-Bots/FileStore">
+<p align="center"><a href="https://heroku.com/deploy?template=https://github.com/AnimeLord-Bots/FileStore">
   <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy On Heroku">
 </a></p>
 <h3 align="center">
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ᴋᴏʏᴇʙ 」─
 </h3>
-<p align="center"><a href="https://app.koyeb.com/deploy?type=git&repository=github.com/Codeflix-Bots/FileStore&branch=master&name=master">
+<p align="center"><a href="https://app.koyeb.com/deploy?type=git&repository=github.com/AnimeLord-Bots/FileStore&branch=master&name=master">
   <img src="https://www.koyeb.com/static/images/deploy/button.svg" alt="Deploy On Koyeb">
 </a></p>
 <h3 align="center">
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʀᴀɪʟᴡᴀʏ 」─
 </h3>
-<p align="center"><a href="https://railway.app/deploy?template=https://github.com/Codeflix-Bots/FileStore">
+<p align="center"><a href="https://railway.app/deploy?template=https://github.com/AnimeLord-Bots/FileStore">
      <img height="45px" src="https://railway.app/button.svg">
 </a></p>
 <h3 align="center">
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʀᴇɴᴅᴇʀ 」─
 </h3>
-<p align="center"><a href="https://render.com/deploy?repo=https://github.com/Codeflix-Bots/FileStore">
+<p align="center"><a href="https://render.com/deploy?repo=https://github.com/AnimeLord-Bots/FileStore">
 <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
 </a></p>
 <h3 align="center">
@@ -128,7 +129,7 @@ remove_premium - ʀᴇᴠᴏᴋᴇ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍ
 </h3>
 <p>
 <pre>
-git clone https://github.com/Codeflix-Bots/FileStore
+git clone https://github.com/AnimeLord-Bots/FileStore
 # Install Packages
 pip3 install -U -r requirements.txt
 Edit info.py with variables as given below then run bot
