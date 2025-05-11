@@ -96,17 +96,29 @@ async def add_force_sub(client: Client, message: Message):
         return await temp.edit(f"<b>ᴄʜᴀɴɴᴇʟ ᴀʟʀᴇᴀᴅʏ ᴇxɪsᴛs:</b> <code>{channel_id}</code>")
 
     try:
+        # Attempt to get chat information
         chat = await client.get_chat(channel_id)
-
         if chat.type != ChatType.CHANNEL:
             return await temp.edit("<b>❌ ᴏɴʟʏ ᴘᴜʙʟɪᴄ ᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜᴀɴɴᴇʟs ᴀʀᴇ ᴀʟʟᴏᴡᴇᴅ.</b>")
 
-        member = await client.get_chat_member(chat.id, "me")
-        if member.status not in [ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
-            return await temp.edit("<b>❌ ʙᴏᴛ ᴍᴜsᴛ ʙᴇ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ᴛʜᴀᴛ ᴄʜᴀɴɴᴇʟ.</b>")
+        # Check if bot is a member of the channel
+        try:
+            member = await client.get_chat_member(chat.id, "me")
+            if member.status not in [ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
+                return await temp.edit(
+                    "<b>❌ ʙᴏᴛ ᴍᴜsᴛ ʙᴇ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ᴛʜᴀᴛ ᴄʜᴀɴɴᴇʟ.</b>\n"
+                    "<i>ᴘʟᴇᴀsᴇ ᴀᴅᴅ ᴛʜᴇ ʙᴏᴛ ᴀs ᴀɴ ᴀᴅᴍɪɴ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ.</i>"
+                )
+        except UserNotParticipant:
+            return await temp.edit(
+                "<b>❌ ʙᴏᴛ ɪs ɴᴏᴛ ᴀ ᴍᴇᴍʙᴇʀ ᴏғ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ.</b>\n"
+                "<i>ᴘʟᴇᴀsᴇ ᴀᴅᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴀɴᴅ ᴍᴀᴋᴇ ɪᴛ ᴀɴ ᴀᴅᴍɪɴ.</i>"
+            )
 
+        # Generate invite link
         link = await client.export_chat_invite_link(chat.id) if not chat.username else f"https://t.me/{chat.username}"
         
+        # Add channel to database
         await db.add_channel(channel_id)
         return await temp.edit(
             f"<b>✅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ ᴀᴅᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ!</b>\n\n"
@@ -115,8 +127,21 @@ async def add_force_sub(client: Client, message: Message):
             disable_web_page_preview=True
         )
 
+    except PeerIdInvalid:
+        return await temp.edit(
+            f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n"
+            "<i>ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ɪᴅ ɪs ɪɴᴠᴀʟɪᴅ ᴏʀ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ. ᴘʟᴇᴀsᴇ ᴄʜᴇᴄᴋ ᴛʜᴇ ɪᴅ ᴀɴᴅ ᴇɴsᴜʀᴇ ᴛʜᴇ ʙᴏᴛ ɪs ᴀ ᴍᴇᴍʙᴇʀ.</i>"
+        )
+    except ChatAdminRequired:
+        return await temp.edit(
+            f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n"
+            "<i>ᴛʜᴇ ʙᴏᴛ ʀᴇǫᴜɪʀᴇs ᴀᴅᴍɪɴ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ᴄʜᴀɴɴᴇʟ. ᴘʟᴇᴀsᴇ ᴍᴀᴋᴇ ᴛʜᴇ ʙᴏᴛ ᴀɴ ᴀᴅᴍɪɴ.</i>"
+        )
     except Exception as e:
-        return await temp.edit(f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n<i>{e}</i>")
+        return await temp.edit(
+            f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n"
+            f"<i>ᴇʀʀᴏʀ: {e}</i>"
+        )
 
 @Bot.on_message(filters.command('delchnl') & filters.private & admin)
 async def del_force_sub(client: Client, message: Message):
