@@ -78,28 +78,47 @@ async def add_force_sub(client: Client, message: Message):
     temp = await message.reply("<b><i>ᴡᴀɪᴛ ᴀ sᴇᴄ..</i></b>", quote=True)
     args = message.text.split(maxsplit=1)
 
+    buttons = [[InlineKeyboardButton("ᴄʟᴏsᴇ ✖️", callback_data="close")]]
+
     if len(args) != 2:
-        buttons = [[InlineKeyboardButton("ᴄʟᴏsᴇ ✖️", callback_data="close")]]
         return await temp.edit(
-            "<b>ᴜꜱᴀɢᴇ:</b> <code>/addchnl -100XXXXXXXXXX</code>\n<b>ᴀᴅᴅ ᴏɴʟʏ ᴏɴᴇ ᴄʜᴀɴɴᴇʟ ᴀᴛ ᴀ ᴛɪᴍᴇ.</b>",
+            "<b>❌ ɪɴᴠᴀʟɪᴅ ᴜsᴀɢᴇ!</b>\n\n"
+            "<b>ᴜꜱᴀɢᴇ:</b> <code>/addchnl -100XXXXXXXXXX</code>\n"
+            "<b>ɴᴏᴛᴇ:</b> ᴀᴅᴅ ᴏɴʟʏ ᴏɴᴇ ᴄʜᴀɴɴᴇʟ ᴀᴛ ᴀ ᴛɪᴍᴇ.",
             reply_markup=InlineKeyboardMarkup(buttons)
         )
 
     try:
         channel_id = int(args[1])
+        if not str(channel_id).startswith('-100') or len(str(channel_id)) < 12:
+            return await temp.edit(
+                "<b>❌ ɪɴᴠᴀʟɪᴅ ᴄʜᴀɴɴᴇʟ ɪᴅ!</b>\n\n"
+                "<i>ᴄʜᴀɴɴᴇʟ ɪᴅ ᴍᴜsᴛ sᴛᴀʀᴛ ᴡɪᴛʜ -100 ᴀɴᴅ ʙᴇ ᴀᴛ ʟᴇᴀsᴛ 12 ᴅɪɢɪᴛs ʟᴏɴɢ.</i>",
+                reply_markup=InlineKeyboardMarkup(buttons)
+            )
     except ValueError:
-        return await temp.edit("<b>❌ ɪɴᴠᴀʟɪᴅ ᴄʜᴀɴɴᴇʟ ɪᴅ!</b>")
+        return await temp.edit(
+            "<b>❌ ɪɴᴠᴀʟɪᴅ ᴄʜᴀɴɴᴇʟ ɪᴅ!</b>\n\n"
+            "<i>ᴘʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ ɴᴜᴍᴇʀɪᴄ ᴄʜᴀɴɴᴇʟ ɪᴅ (ᴇ.ɢ., -100XXXXXXXXXX).</i>",
+            reply_markup=InlineKeyboardMarkup(buttons)
+        )
 
     all_channels = await db.show_channels()
     channel_ids_only = [cid if isinstance(cid, int) else cid[0] for cid in all_channels]
     if channel_id in channel_ids_only:
-        return await temp.edit(f"<b>ᴄʜᴀɴɴᴇʟ ᴀʟʀᴇᴀᴅʏ ᴇxɪsᴛs:</b> <code>{channel_id}</code>")
+        return await temp.edit(
+            f"<b>❌ ᴄʜᴀɴɴᴇʟ ᴀʟʀᴇᴀᴅʏ ᴇxɪsᴛs:</b> <code>{channel_id}</code>",
+            reply_markup=InlineKeyboardMarkup(buttons)
+        )
 
     try:
         # Attempt to get chat information
         chat = await client.get_chat(channel_id)
         if chat.type != ChatType.CHANNEL:
-            return await temp.edit("<b>❌ ᴏɴʟʏ ᴘᴜʙʟɪᴄ ᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜᴀɴɴᴇʟs ᴀʀᴇ ᴀʟʟᴏᴡᴇᴅ.</b>")
+            return await temp.edit(
+                "<b>❌ ᴏɴʟʏ ᴘᴜʙʟɪᴄ ᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜᴀɴɴᴇʟs ᴀʀᴇ ᴀʟʟᴏᴡᴇᴅ.</b>",
+                reply_markup=InlineKeyboardMarkup(buttons)
+            )
 
         # Check if bot is a member of the channel
         try:
@@ -107,12 +126,14 @@ async def add_force_sub(client: Client, message: Message):
             if member.status not in [ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
                 return await temp.edit(
                     "<b>❌ ʙᴏᴛ ᴍᴜsᴛ ʙᴇ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ᴛʜᴀᴛ ᴄʜᴀɴɴᴇʟ.</b>\n"
-                    "<i>ᴘʟᴇᴀsᴇ ᴀᴅᴅ ᴛʜᴇ ʙᴏᴛ ᴀs ᴀɴ ᴀᴅᴍɪɴ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ.</i>"
+                    "<i>ᴘʟᴇᴀsᴇ ᴀᴅᴅ ᴛʜᴇ ʙᴏᴛ ᴀs ᴀɴ ᴀᴅᴍɪɴ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ.</i>",
+                    reply_markup=InlineKeyboardMarkup(buttons)
                 )
         except UserNotParticipant:
             return await temp.edit(
                 "<b>❌ ʙᴏᴛ ɪs ɴᴏᴛ ᴀ ᴍᴇᴍʙᴇʀ ᴏғ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ.</b>\n"
-                "<i>ᴘʟᴇᴀsᴇ ᴀᴅᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴀɴᴅ ᴍᴀᴋᴇ ɪᴛ ᴀɴ ᴀᴅᴍɪɴ.</i>"
+                "<i>ᴘʟᴇᴀsᴇ ᴀᴅᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴀɴᴅ ᴍᴀᴋᴇ ɪᴛ ᴀɴ ᴀᴅᴍɪɴ.</i>",
+                reply_markup=InlineKeyboardMarkup(buttons)
             )
 
         # Generate invite link
@@ -124,23 +145,27 @@ async def add_force_sub(client: Client, message: Message):
             f"<b>✅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ ᴀᴅᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ!</b>\n\n"
             f"<b>ɴᴀᴍᴇ:</b> <a href='{link}'>{chat.title}</a>\n"
             f"<b>ɪᴅ:</b> <code>{channel_id}</code>",
-            disable_web_page_preview=True
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(buttons)
         )
 
     except PeerIdInvalid:
         return await temp.edit(
             f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n"
-            "<i>ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ɪᴅ ɪs ɪɴᴠᴀʟɪᴅ ᴏʀ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ. ᴘʟᴇᴀsᴇ ᴄʜᴇᴄᴋ ᴛʜᴇ ɪᴅ ᴀɴᴅ ᴇɴsᴜʀᴇ ᴛʜᴇ ʙᴏᴛ ɪs ᴀ ᴍᴇᴍʙᴇʀ.</i>"
+            "<i>ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ɪᴅ ɪs ɪɴᴠᴀʟɪᴅ ᴏʀ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ. ᴘʟᴇᴀsᴇ ᴄʜᴇᴄᴋ ᴛʜᴇ ɪᴅ ᴀɴᴅ ᴇɴsᴜʀᴇ ᴛʜᴇ ʙᴏᴛ ɪs ᴀ ᴍᴇᴍʙᴇʀ.</i>",
+            reply_markup=InlineKeyboardMarkup(buttons)
         )
     except ChatAdminRequired:
         return await temp.edit(
             f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n"
-            "<i>ᴛʜᴇ ʙᴏᴛ ʀᴇǫᴜɪʀᴇs ᴀᴅᴍɪɴ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ᴄʜᴀɴɴᴇʟ. ᴘʟᴇᴀsᴇ ᴍᴀᴋᴇ ᴛʜᴇ ʙᴏᴛ ᴀɴ ᴀᴅᴍɪɴ.</i>"
+            "<i>ᴛʜᴇ ʙᴏᴛ ʀᴇǫᴜɪʀᴇs ᴀᴅᴍɪɴ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ᴄʜᴀɴɴᴇʟ. ᴘʟᴇᴀsᴇ ᴍᴀᴋᴇ ᴛʜᴇ ʙᴏᴛ ᴀɴ ᴀᴅᴍɪɴ.</i>",
+            reply_markup=InlineKeyboardMarkup(buttons)
         )
     except Exception as e:
         return await temp.edit(
             f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n"
-            f"<i>ᴇʀʀᴏʀ: {e}</i>"
+            f"<i>ᴇʀʀᴏʀ: {e}</i>",
+            reply_markup=InlineKeyboardMarkup(buttons)
         )
 
 @Bot.on_message(filters.command('delchnl') & filters.private & admin)
