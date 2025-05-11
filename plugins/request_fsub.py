@@ -5,10 +5,9 @@
 # and is released under the MIT License.
 # Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
 #
-# All rights reserved.
+# All rights reserved
 
 import asyncio
-import logging
 import os
 import random
 import sys
@@ -21,9 +20,6 @@ from bot import Bot
 from config import *
 from helper_func import *
 from database.database import *
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 @Bot.on_message(filters.command('fsub_mode') & filters.private & admin)
 async def change_force_sub_mode(client: Client, message: Message):
@@ -41,8 +37,7 @@ async def change_force_sub_mode(client: Client, message: Message):
             status = "🟢" if mode == "on" else "🔴"
             title = f"{status} {chat.title}"
             buttons.append([InlineKeyboardButton(title, callback_data=f"rfs_ch_{ch_id}")])
-        except Exception as e:
-            logger.error(f"Failed to fetch channel {ch_id}: {e}")
+        except:
             buttons.append([InlineKeyboardButton(f"⚠️ {ch_id} (ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ)", callback_data=f"rfs_ch_{ch_id}")])
 
     buttons.append([InlineKeyboardButton("ᴄʟᴏsᴇ ✖️", callback_data="close")])
@@ -68,7 +63,6 @@ async def handle_Chatmembers(client, chat_member_updated: ChatMemberUpdated):
 
             if await db.req_user_exist(chat_id, user_id):
                 await db.del_req_user(chat_id, user_id)
-                logger.info(f"Removed user {user_id} from request list for channel {chat_id}")
 
 @Bot.on_chat_join_request()
 async def handle_join_request(client, chat_join_request):
@@ -78,7 +72,6 @@ async def handle_join_request(client, chat_join_request):
     if await db.reqChannel_exist(chat_id):
         if not await db.req_user_exist(chat_id, user_id):
             await db.req_user(chat_id, user_id)
-            logger.info(f"Added user {user_id} to request list for channel {chat_id}")
 
 @Bot.on_message(filters.command('addchnl') & filters.private & admin)
 async def add_force_sub(client: Client, message: Message):
@@ -104,7 +97,6 @@ async def add_force_sub(client: Client, message: Message):
 
     try:
         chat = await client.get_chat(channel_id)
-        logger.info(f"Fetched chat info for channel {channel_id}: {chat.title}")
 
         if chat.type != ChatType.CHANNEL:
             return await temp.edit("<b>❌ ᴏɴʟʏ ᴘᴜʙʟɪᴄ ᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜᴀɴɴᴇʟs ᴀʀᴇ ᴀʟʟᴏᴡᴇᴅ.</b>")
@@ -116,7 +108,6 @@ async def add_force_sub(client: Client, message: Message):
         link = await client.export_chat_invite_link(chat.id) if not chat.username else f"https://t.me/{chat.username}"
         
         await db.add_channel(channel_id)
-        logger.info(f"Successfully added channel {channel_id} to force-sub list")
         return await temp.edit(
             f"<b>✅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ ᴀᴅᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ!</b>\n\n"
             f"<b>ɴᴀᴍᴇ:</b> <a href='{link}'>{chat.title}</a>\n"
@@ -124,17 +115,8 @@ async def add_force_sub(client: Client, message: Message):
             disable_web_page_preview=True
         )
 
-    except PeerIdInvalid:
-        logger.error(f"PeerIdInvalid for channel {channel_id}. Ensure bot is added and has admin rights.")
-        return await temp.edit(
-            f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n"
-            f"<i>Ensure the channel ID is correct and the bot is added as an admin in the channel.</i>"
-        )
     except Exception as e:
-        logger.error(f"Failed to add channel {channel_id}: {e}")
-        return await temp.edit(
-            f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n<i>{e}</i>"
-        )
+        return await temp.edit(f"<b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b>\n<code>{channel_id}</code>\n\n<i>{e}</i>")
 
 @Bot.on_message(filters.command('delchnl') & filters.private & admin)
 async def del_force_sub(client: Client, message: Message):
@@ -154,14 +136,12 @@ async def del_force_sub(client: Client, message: Message):
             return await temp.edit("<b>❌ ɴᴏ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs ғᴏᴜɴᴅ.</b>")
         for ch_id in all_channels:
             await db.rem_channel(ch_id)
-            logger.info(f"Removed channel {ch_id} from force-sub list")
         return await temp.edit("<b>✅ ᴀʟʟ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs ʀᴇᴍᴏᴠᴇᴅ.</b>")
 
     try:
         ch_id = int(args[1])
         if ch_id in all_channels:
             await db.rem_channel(ch_id)
-            logger.info(f"Removed channel {ch_id} from force-sub list")
             return await temp.edit(f"<b>✅ ᴄʜᴀɴɴᴇʟ ʀᴇᴍᴏᴠᴇᴅ:</b> <code>{ch_id}</code>")
         else:
             return await temp.edit(f"<b>❌ ᴄʜᴀɴɴᴇʟ ɴᴏᴛ ғᴏᴜɴᴅ:</b> <code>{ch_id}</code>")
@@ -172,7 +152,6 @@ async def del_force_sub(client: Client, message: Message):
             reply_markup=InlineKeyboardMarkup(buttons)
         )
     except Exception as e:
-        logger.error(f"Error removing channel: {e}")
         return await temp.edit(f"<b>❌ ᴇʀʀᴏʀ:</b> <code>{e}</code>")
 
 @Bot.on_message(filters.command('listchnl') & filters.private & admin)
@@ -189,8 +168,7 @@ async def list_force_sub_channels(client: Client, message: Message):
             chat = await client.get_chat(ch_id)
             link = await client.export_chat_invite_link(ch_id) if not chat.username else f"https://t.me/{chat.username}"
             result += f"<b>•</b> <a href='{link}'>{chat.title}</a> [<code>{ch_id}</code>]\n"
-        except Exception as e:
-            logger.error(f"Failed to fetch channel {ch_id} for listing: {e}")
+        except Exception:
             result += f"<b>•</b> <code>{ch_id}</code> — <i>ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ</i>\n"
 
     buttons = [[InlineKeyboardButton("ᴄʟᴏsᴇ ✖️", callback_data="close")]]
@@ -198,7 +176,7 @@ async def list_force_sub_channels(client: Client, message: Message):
         result, 
         disable_web_page_preview=True, 
         reply_markup=InlineKeyboardMarkup(buttons)
-    )
+)
 
 #
 # Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
@@ -207,5 +185,4 @@ async def list_force_sub_channels(client: Client, message: Message):
 # and is released under the MIT License.
 # Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
 #
-# All rights reserved.
-#
+# All rights reserved
