@@ -234,7 +234,7 @@ async def not_joined(client: Client, message: Message):
         )
     except Exception as e:
         print(f"ғɪɴᴀʟ ᴇʀʀᴏʀ: {e}")
-        await temp.edit(f"ᴇʀʀᴏʀ, ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ @MehediYT69\nʀᴇᴀsᴏɴ: {e}")
+        await temp.edit(f"<blockquote><b>ᴇʀʀᴏʀ, ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ @MehediYT69\nʀᴇᴀsᴏɴ: {e}</b></blockquote>")
     finally:
         await temp.delete()
 
@@ -248,8 +248,8 @@ async def check_plan(client: Client, message: Message):
 async def add_premium_user_command(client, msg):
     if len(msg.command) != 4:
         await msg.reply_text(
-            "ᴜsᴀɢᴇ: /addpremium <user_id> <time_value> <time_unit>\n\n"
-            "ᴛɪᴍᴇ ᴜɴɪᴛs:\n"
+            "<blockquote><b>ᴜsᴀɢᴇ:</b></blockquote>\n /addpremium <user_id> <time_value> <time_unit>\n\n"
+            "<blockquote><b>ᴛɪᴍᴇ ᴜɴɪᴛs:\n"
             "s - sᴇᴄᴏɴᴅs\n"
             "m - ᴍɪɴᴜᴛᴇs\n"
             "h - ʜᴏᴜʀs\n"
@@ -259,7 +259,7 @@ async def add_premium_user_command(client, msg):
             "/addpremium 123456789 30 m - 30 ᴍɪɴᴜᴛᴇs\n"
             "/addpremium 123456789 2 h - 2 ʜᴏᴜʀs\n"
             "/addpremium 123456789 1 d - 1 ᴅᴀʏ\n"
-            "/addpremium 123456789 1 y - 1 ʏᴇᴀʀ"
+            "/addpremium 123456789 1 y - 1 ʏᴇᴀʀ</b></blockquote>"
         )
         return
     try:
@@ -274,25 +274,25 @@ async def add_premium_user_command(client, msg):
         await client.send_message(
             chat_id=user_id,
             text=(
-                f"ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!\n\n"
-                f"ʏᴏᴜ ʜᴀᴠᴇ ʀᴇᴄᴇɪᴠᴇᴅ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss ғᴏʀ {time_value} {time_unit}.\n"
-                f"ᴇxᴘɪʀᴇs ᴏɴ: {expiration_time}"
+                f"<blockquote><b>ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴛɪᴠᴀᴛᴇᴅ!</b></blockquote>\n\n"
+                f"<b>Yᴏᴜ ʜᴀᴠᴇ ʀᴇᴄᴇɪᴠᴇᴅ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss ғᴏʀ {time_value} {time_unit}.</b>\n"
+                f"<b>ᴇxᴘɪʀᴇs ᴏɴ: {expiration_time}</b>"
             ),
         )
     except ValueError:
-        await msg.reply_text("ɪɴᴠᴀʟɪᴅ ɪɴᴘᴜᴛ. ᴘʟᴇᴀsᴇ ᴇɴsᴜʀᴇ ᴜsᴇʀ ɪᴅ ᴀɴᴅ ᴛɪᴍᴇ ᴠᴀʟᴜᴇ ᴀʀᴇ ɴᴜᴍʙᴇʀs.")
+        await msg.reply_text("<blockquote><b>ɪɴᴠᴀʟɪᴅ ɪɴᴘᴜᴛ. ᴘʟᴇᴀsᴇ ᴇɴsᴜʀᴇ ᴜsᴇʀ ɪᴅ ᴀɴᴅ ᴛɪᴍᴇ ᴠᴀʟᴜᴇ ᴀʀᴇ ɴᴜᴍʙᴇRs</b></blockquote>.")
     except Exception as e:
         await msg.reply_text(f"ᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ: {str(e)}")
 
 @Bot.on_message(filters.command('remove_premium') & filters.private & admin)
 async def pre_remove_user(client: Client, msg: Message):
     if len(msg.command) != 2:
-        await msg.reply_text("ᴜsᴀɢᴇ: /remove_premium user_id")
+        await msg.reply_text("<blockquote><b>ᴜsᴀɢᴇ:</b></blockquote> /remove_premium user_id")
         return
     try:
         user_id = int(msg.command[1])
         await remove_premium(user_id)
-        await msg.reply_text(f"ᴜsᴇʀ {user_id} ʜᴀs ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ.")
+        await msg.reply_text(f"<blockquote><b>ᴜsᴇʀ {user_id} ʜᴀs ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ.</b></blockquote>")
     except ValueError:
         await msg.reply_text("ᴜsᴇʀ ɪᴅ ᴍᴜsᴛ ʙᴇ ᴀɴ ɪɴᴛᴇɢᴇʀ ᴏʀ ɴᴏᴛ ᴀᴠᴀɪʟᴀʙʟᴇ ɪɴ ᴅᴀᴛᴀʙᴀsᴇ.")
 
@@ -350,7 +350,7 @@ async def list_premium_users_command(client, message):
 @Bot.on_message(filters.command("count") & filters.private & admin)
 async def total_verify_count_cmd(client, message: Message):
     total = await db.get_total_verify_count()
-    await message.reply_text(f"ᴛᴏᴛᴀʟ ᴠᴇʀɪғɪᴇᴅ ᴛᴏᴋᴇɴs ᴛᴏᴅᴀʏ: {total}")
+    await message.reply_text(f"<blockquote><b>ᴛᴏᴛᴀʟ ᴠᴇʀɪғɪᴇᴅ ᴛᴏᴋᴇɴs ᴛᴏᴅᴀʏ: {total}</b></blockquote>")
 
 @Bot.on_message(filters.command('commands') & filters.private & admin)
 async def bcmd(bot: Bot, message: Message):        
@@ -360,11 +360,11 @@ async def bcmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('admin_cmd') & filters.private & admin)
 async def admin_cmd(bot: Bot, message: Message):
     reply_text = (
-        "ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ᴀᴅᴅ, ʀᴇᴍᴏᴠᴇ, ᴀɴᴅ ɢᴇᴛ ᴀ ʟɪsᴛ ᴏғ ᴀᴅᴍɪɴ ᴄᴏᴍᴍᴀɴᴅs.\n\n"
-        "ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:\n"
-        "- /add_admin - ᴀᴅᴅ ɴᴇᴡ ᴀᴅᴍɪɴ [ᴀᴅᴍɪɴ]\n"
-        "- /deladmin - ʀᴇᴍᴏᴠᴇ ᴀᴅᴍɪɴ [ᴀᴅᴍɪɴ]\n"
-        "- /admins - ʟɪsᴛ ᴀʟʟ ᴀᴅᴍɪɴs [ᴀᴅᴍɪɴ]"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ᴀᴅᴅ, ʀᴇᴍᴏᴠᴇ, ᴀɴᴅ ɢᴇᴛ ᴀ ʟɪsᴛ ᴏғ ᴀᴅᴍɪɴ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
+        "<b>ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /add_admin - <b>ᴀᴅᴅ ɴᴇᴡ ᴀᴅᴍɪɴ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /deladmin - <b>ʀᴇᴍᴏᴠᴇ ᴀᴅᴍɪɴ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /admins - <b>ʟɪsᴛ ᴀʟʟ ᴀᴅᴍɪɴs [ᴀᴅᴍɪɴ]</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
@@ -372,11 +372,11 @@ async def admin_cmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('premium_cmd') & filters.private & admin)
 async def premium_cmd(bot: Bot, message: Message):
     reply_text = (
-        "ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs ʀᴇʟᴀᴛᴇᴅ ᴄᴏᴍᴍᴀɴᴅs.\n\n"
-        "ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:\n"
-        "- /addpremium - ɢʀᴀɴᴛ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]\n"
-        "- /remove_premium - ʀᴇᴠᴏᴋᴇ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]\n"
-        "- /premium_users - ʟɪsᴛ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs [ᴀᴅᴍɪɴ]"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs ʀᴇʟᴀᴛᴇᴅ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
+        "<b>ᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /addpremium - <b>ɢʀᴀɴᴛ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]</b>\n"
+        "- /remove_premium - <b>ʀᴇᴠᴏᴋᴇ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]</b>\n"
+        "- /premium_users - <b>ᴛ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs [ᴀᴅᴍɪɴ]</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
@@ -384,12 +384,12 @@ async def premium_cmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('user_cmd') & filters.private & admin)
 async def user_cmd(bot: Bot, message: Message):
     reply_text = (
-        "ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴜsᴇʀs ʀᴇʟᴀᴛᴇᴅ ᴄᴏᴍᴍᴀɴᴅs.\n\n"
-        "ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:\n"
-        "- /users - ᴠɪᴇᴡ ʙᴏᴛ sᴛᴀᴛɪsᴛɪᴄs [ᴀᴅᴍɪɴ]\n"
-        "- /ban - ʙᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]\n"
-        "- /unban - ᴜɴʙᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]\n"
-        "- /banlist - ʟɪsᴛ ʙᴀɴɴᴇᴅ ᴜsᴇʀs [ᴀᴅᴍɪɴ]"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴜsᴇʀs ʀᴇʟᴀᴛᴇᴅ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
+        "<b>ᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /users - <b>ᴠɪᴇᴡ ʙᴏᴛ sᴛᴀᴛɪsᴛɪᴄs [ᴀᴅᴍɪɴ]</b>\n"
+        "- /ban - <b>ᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /unban - <b>ᴜɴʙᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /banlist - <b>ᴛ ʙᴀɴɴᴇᴅ ᴜsᴇʀs [ᴀᴅᴍɪɴ]</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
@@ -397,11 +397,11 @@ async def user_cmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('broadcast_cmd') & filters.private & admin)
 async def broadcast_cmd(bot: Bot, message: Message):
     reply_text = (
-        "ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ʙʀᴏᴀᴅᴄᴀsᴛ ᴄᴏᴍᴍᴀɴᴅs.\n\n"
-        "ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:\n"
-        "- /broadcast - ʙʀᴏᴀᴅᴄᴀsᴛ ᴍᴇssᴀɢᴇs ᴛᴏ ᴜsᴇʀs [ᴀᴅᴍɪɴ]\n"
-        "- /dbroadcast - ʙʀᴏᴀᴅᴄᴀsᴛ ᴡɪᴛʜ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ [ᴀᴅᴍɪɴ]\n"
-        "- /pbroadcast - ᴘɪɴ ʙʀᴏᴀᴅᴄᴀsᴛ ᴛᴏ ᴀʟʟ ᴜsᴇʀs [ᴀᴅᴍɪɴ]"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ʙʀᴏᴀᴅᴄᴀsᴛ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
+        "</b>ᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /broadcast - <b>ᴏᴀᴅᴄᴀsᴛ ᴍᴇssᴀɢᴇs ᴛᴏ ᴜsᴇʀs [ᴀᴅᴍɪɴ]</b>\n"
+        "- /dbroadcast - <b>ᴏᴀᴅᴄᴀsᴛ ᴡɪᴛʜ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /pbroadcast - <b>ᴘɪɴ ʙʀᴏᴀᴅᴄᴀsᴛ ᴛᴏ ᴀʟʟ ᴜsᴇʀs [ᴀᴅᴍɪɴ]</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
@@ -409,12 +409,12 @@ async def broadcast_cmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('force_chn_cmd') & filters.private & admin)
 async def force_chn_cmd(bot: Bot, message: Message):
     reply_text = (
-        "ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ғᴏʀᴄᴇ sᴜʙ ᴄᴏᴍᴍᴀɴᴅs.\n\n"
-        "ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:\n"
-        "- /fsub_mode - ᴛᴏɢɢʟᴇ ғᴏʀᴄᴇ-sᴜʙsᴄʀɪʙᴇ [ᴀᴅᴍɪɴ]\n"
-        "- /addchnl - ᴀᴅᴅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]\n"
-        "- /delchnl - ʀᴇᴍᴏᴠᴇ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]\n"
-        "- /listchnl - ᴠɪᴇᴡ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs [ᴀᴅᴍɪɴ]"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ғᴏʀᴄᴇ sᴜʙ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
+        "<b>ᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /fsub_mode - <b>ᴛᴏɢɢʟᴇ ғᴏʀᴄᴇ-sᴜʙsᴄʀɪʙᴇ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /addchnl - <b>ᴀᴅᴅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /delchnl - <b>ᴇᴍᴏᴠᴇ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /listchnl - <b>ᴠɪᴇᴡ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs [ᴀᴅᴍɪɴ]</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
@@ -422,10 +422,10 @@ async def force_chn_cmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('auto_dlt_cmd') & filters.private & admin)
 async def auto_dlt_cmd(bot: Bot, message: Message):
     reply_text = (
-        "ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ ᴄᴏᴍᴍᴀɴᴅs.\n\n"
-        "ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:\n"
-        "- /dlt_time - sᴇᴛ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]\n"
-        "- /check_dlt_time - ᴄʜᴇᴄᴋ ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
+        "<b>ᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /dlt_time - sᴇᴛ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /check_dlt_time - <b>ᴄʜᴇᴄᴋ ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
@@ -433,12 +433,12 @@ async def auto_dlt_cmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('links_cmd') & filters.private & admin)
 async def links_cmd(bot: Bot, message: Message):
     reply_text = (
-        "ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ sɪɴɢʟᴇ ғɪʟᴇ, ʙᴀᴛᴄʜ ᴀɴᴅ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ʟɪɴᴋs ᴄᴏᴍᴍᴀɴᴅs.\n\n"
-        "ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:\n"
-        "- /batch - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋs ғᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴘᴏsᴛs\n"
-        "- /flink - ꜱᴇᴛ ᴀᴜᴛᴏ ʙᴀᴛᴄʜ ꜰᴏʀᴍᴀᴛ\n"
-        "- /custom_batch - ᴄʀᴇᴀᴛᴇ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ғʀᴏᴍ ᴄʜᴀɴɴᴇʟ/ɢʀᴏᴜᴘ\n"
-        "- /genlink - ᴄʀᴇᴀᴛᴇ ʟɪɴᴋ ғᴏʀ ᴀ sɪɴɢʟᴇ ᴘᴏsᴛ"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ sɪɴɢʟᴇ ғɪʟᴇ, ʙᴀᴛᴄʜ ᴀɴᴅ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ʟɪɴᴋs ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
+        "<b>ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /batch - <b>ᴄʀᴇᴀᴛᴇ ʟɪɴᴋs ғᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴘᴏsᴛs</b>\n"
+        "- /flink - <b>ꜱᴇᴛ ᴀᴜᴛᴏ ʙᴀᴛᴄʜ ꜰᴏʀᴍᴀᴛ</b>\n"
+        "- /custom_batch - <b>ᴄʀᴇᴀᴛᴇ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ғʀᴏᴍ ᴄʜᴀɴɴᴇʟ/ɢʀᴏᴜᴘ</b>\n"
+        "- /genlink - <b>ᴄʀᴇᴀᴛᴇ ʟɪɴᴋ ғᴏʀ ᴀ sɪɴɢʟᴇ ᴘᴏsᴛ</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
