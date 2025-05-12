@@ -15,6 +15,16 @@ from bot import Bot
 from config import *
 from database.database import db
 
+# List of message effect IDs for random selection (Converted to integers)
+MESSAGE_EFFECT_IDS = [
+    5104841245755180586,  # 🔥
+    5107584321108051014,  # 👍
+    5044134455711629726,  # ❤️
+    5046509860389126442,  # 🎉
+    5104858069142078462,  # 👎
+    5046589136895476101,  # 💩
+]
+
 @Bot.on_callback_query(filters.regex(r"^(help|about|home|premium|close|rfs_ch_|rfs_toggle_|fsub_back|set_|remove_)"))
 async def cb_handler(client: Bot, query: CallbackQuery):
     data = query.data
@@ -40,7 +50,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             )
         except Exception as e:
             print(f"ᴇʀʀᴏʀ ɪɴ ʜᴇʟᴘ ᴄᴀʟʟʙᴀᴄᴋ: {e}")
-            await query.message.edit_text("ᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ᴜᴘᴅᴀᴛɪɴɢ ᴛʜᴇ ʜᴇʟᴘ ᴍᴇssᴀɢᴇ.")
+            await query.message.edit_text("ᴀɴ ᴇʀʀᴏʰʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ᴜᴘᴅᴀᴛɪɴɢ ᴛʜᴇ ʜᴇʟᴘ ᴍᴇssᴀɢᴇ.")
         await query.answer()
 
     elif data == "about":
@@ -115,7 +125,8 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                     ],
                     [InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")],
                 ]
-            )
+            ),
+            message_effect_id=random.choice(MESSAGE_EFFECT_IDS)
         )
         await query.answer()
 
@@ -126,7 +137,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             if query.message.reply_to_message:
                 await query.message.reply_to_message.delete()
         except Exception as e:
-            print(f"ᴇʀʀᴏʀ ɪɴ ᴄʟᴏsᴇ ᴄᴀʟʟʙᴀᴄᴋ: {e}")
+            print(f"ᴇʀʀᴏʀ ɪɴ ᴄʟᴏsᴇ ᴄᴀʟʲʟʙᴀᴄᴋ: {e}")
         await query.answer()
 
     elif data.startswith("rfs_ch_"):
@@ -198,7 +209,6 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             text = f"ᴄᴜʀʀᴇɴᴛ {type} ɪᴍᴀɢᴇs: {', '.join(map(str, nums))}\nᴛᴏ ʀᴇᴍᴏᴠᴇ ᴀ sɪɴɢʟᴇ ɪᴍᴀɢᴇ, ᴜsᴇ /rev_{type} <number>\nᴛᴏ ʀᴇᴍᴏᴠᴇ ᴀʟʟ, ᴜsᴇ /rev_all_{type}"
             await query.message.reply_text(text)
         await query.answer()
-
 
 #
 # Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
