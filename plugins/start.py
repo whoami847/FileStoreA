@@ -32,6 +32,16 @@ EMOJI_MODE = True
 REACTIONS = ["👍", "😍", "🔥", "🎉", "❤️", "⚡"]
 STICKER_ID = "CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ"
 
+# List of message effect IDs for random selection (Converted to integers)
+MESSAGE_EFFECT_IDS = [
+    5104841245755180586,  # 🔥
+    5107584321108051014,  # 👍
+    5044134455711629726,  # ❤️
+    5046509860389126442,  # 🎉
+    5104858069142078462,  # 👎
+    5046589136895476101,  # 💩
+]
+
 BAN_SUPPORT = f"{BAN_SUPPORT}"
 TUT_VID = f"{TUT_VID}"
 
@@ -71,6 +81,24 @@ async def start_command(client: Client, message: Message):
             await db.add_user(user_id)
         except:
             pass
+
+    # Animation messages
+    m = await message.reply_text("ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍʏ ʙᴏᴛ.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...")
+    await asyncio.sleep(0.4)
+    await m.edit_text("...")
+    await asyncio.sleep(0.5)
+    await m.edit_text("ᴄʜᴇᴄᴋɪɴɢ...")
+    await asyncio.sleep(0.5)
+    await m.edit_text("sᴛᴀʀᴛɪɴɢ...")
+    await asyncio.sleep(0.4)
+    await m.delete()
+
+    # Send sticker
+    if STICKER_ID:
+        m = await message.reply_sticker(STICKER_ID)
+        await asyncio.sleep(1)
+        await m.delete()
+
     text = message.text
     if len(text) > 7:
         try:
@@ -140,58 +168,47 @@ async def start_command(client: Client, message: Message):
                 reload_url = f"https://t.me/{client.username}?start={message.command[1]}" if message.command and len(message.command) > 1 else None
                 keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=reload_url)]]) if reload_url else None
                 await notification_msg.edit(
-                    "ʏᴏᴜʀ ᴠɪᴅᴇᴏ/ғɪʟᴇ ɪs sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ!\n\nᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ᴅᴇʟᴇᴛᴇᴅ ᴠɪᴅᴇᴏ/ғɪʟᴇ.",
+                    "ʏᴏᴜʀ ᴠɪᴅᴇᴏ/ғɪʟᴇ ɪs sᴜᴄᴄᴇssғᴜʟʏ ᴅᴇʟᴇᴛᴇᴅ!\n\nᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ᴅᴇʟᴇᴛᴇᴅ ᴠɪᴅᴇᴏ/ғɪʟᴇ.",
                     reply_markup=keyboard
                 )
             except Exception as e:
                 print(f"ᴇʀʀᴏʀ ᴜᴘᴅᴀᴛɪɴɢ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ: {e}")
-    else:
-        m = await message.reply_text("ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴍʏ ʙᴏᴛ.\nʜᴏᴘᴇ ʏᴏᴜ'ʀᴇ ᴅᴏɪɴɢ ᴡᴇʟʟ...")
-        await asyncio.sleep(0.4)
-        await m.edit_text("...")
+        return
+
+    # Send start message
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("ᴍᴏʀᴇ ᴄʜᴀɴɴᴇʟs", url="https://t.me/Anime_Lord_List")],
+        [InlineKeyboardButton("ᴀʙᴏᴜᴛ", callback_data="about"), InlineKeyboardButton("ʜᴇʟᴘ", callback_data="help")]
+    ])
+    try:
         await asyncio.sleep(0.5)
-        await m.edit_text("ᴄʜᴇᴄᴋɪɴɢ...")
+        selected_image = random.choice(RANDOM_IMAGES) if RANDOM_IMAGES else START_PIC
+        await message.reply_photo(
+            photo=selected_image,
+            caption=START_MSG.format(
+                first=message.from_user.first_name,
+                last=message.from_user.last_name if message.from_user.last_name else "",
+                username=None if not message.from_user.username else '@' + message.from_user.username,
+                mention=message.from_user.mention,
+                id=message.from_user.id
+            ),
+            reply_markup=reply_markup,
+            message_effect_id=random.choice(MESSAGE_EFFECT_IDS)
+        )
+    except Exception as e:
+        print(f"ᴇʀʀᴏʀ sᴇɴᴅɪɴɢ sᴛᴀʰʀᴛ ᴘʜᴏᴛᴏ: {e}")
         await asyncio.sleep(0.5)
-        await m.edit_text("sᴛᴀʀᴛɪɴɢ...")
-        await asyncio.sleep(0.4)
-        await m.delete()
-        m = await message.reply_sticker(STICKER_ID)
-        await asyncio.sleep(1)
-        await m.delete()
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("ᴍᴏʀᴇ ᴄʜᴀɴɴᴇʟs", url="https://t.me/Anime_Lord_List")],
-            [InlineKeyboardButton("ᴀʙᴏᴜᴛ", callback_data="about"), InlineKeyboardButton("ʜᴇʟᴘ", callback_data="help")]
-        ])
-        try:
-            await asyncio.sleep(0.5)
-            selected_image = random.choice(RANDOM_IMAGES) if RANDOM_IMAGES else START_PIC
-            await message.reply_photo(
-                photo=selected_image,
-                caption=START_MSG.format(
-                    first=message.from_user.first_name,
-                    last=message.from_user.last_name if message.from_user.last_name else "",
-                    username=None if not message.from_user.username else '@' + message.from_user.username,
-                    mention=message.from_user.mention,
-                    id=message.from_user.id
-                ),
-                reply_markup=reply_markup,
-                message_effect_id=5104841245755180586
-            )
-        except Exception as e:
-            print(f"ᴇʀʀᴏʀ sᴇɴᴅɪɴɢ sᴛᴀʀᴛ ᴘʜᴏᴛᴏ: {e}")
-            await asyncio.sleep(0.5)
-            await message.reply_photo(
-                photo=START_PIC,
-                caption=START_MSG.format(
-                    first=message.from_user.first_name,
-                    last=message.from_user.last_name if message.from_user.last_name else "",
-                    username=None if not message.from_user.username else '@' + message.from_user.username,
-                    mention=message.from_user.mention,
-                    id=message.from_user.id
-                ),
-                reply_markup=reply_markup,
-                message_effect_id=5104841245755180586
-            )
+        await message.reply_photo(
+            photo=START_PIC,
+            caption=START_MSG.format(
+                first=message.from_user.first_name,
+                last=message.from_user.last_name if message.from_user.last_name else "",
+                username=None if not message.from_user.username else '@' + message.from_user.username,
+                mention=message.from_user.mention,
+                id=message.from_user.id
+            ),
+            reply_markup=reply_markup
+        )
 
 async def not_joined(client: Client, message: Message):
     temp = await message.reply("ᴄʜᴇᴄᴋɪɴɢ sᴜʙsᴄʀɪᴘᴛɪᴏɴ...")
@@ -296,15 +313,6 @@ async def pre_remove_user(client: Client, msg: Message):
     except ValueError:
         await msg.reply_text("ᴜsᴇʀ ɪᴅ ᴍᴜsᴛ ʙᴇ ᴀɴ ɪɴᴛᴇɢᴇʀ ᴏʀ ɴᴏᴛ ᴀᴠᴀɪʟᴀʙʟᴇ ɪɴ ᴅᴀᴛᴀʙᴀsᴇ.")
 
-#
-# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
-#
-# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
-# and is released under the MIT License.
-# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
-#
-# All rights reserved.
-
 @Bot.on_message(filters.command('premium_users') & filters.private & admin)
 async def list_premium_users_command(client, message):
     from pytz import timezone
@@ -374,7 +382,7 @@ async def premium_cmd(bot: Bot, message: Message):
     reply_text = (
         "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs ʀᴇʟᴀᴛᴇᴅ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
         "<b>ᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
-        "- /addpremium - <b>ɢʀᴀɴᴛ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]</b>\n"
+        "- /addpremium - <b>ɢʀᴀɴᴛ ᴘʀᴇᴮᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]</b>\n"
         "- /remove_premium - <b>ʀᴇᴠᴏᴋᴇ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss [ᴀᴅᴍɪɴ]</b>\n"
         "- /premium_users - <b>ᴛ ᴘʀᴇᴍɪᴜᴍ ᴜsᴇʀs [ᴀᴅᴍɪɴ]</b>"
     )
@@ -389,7 +397,7 @@ async def user_cmd(bot: Bot, message: Message):
         "- /users - <b>ᴠɪᴇᴡ ʙᴏᴛ sᴛᴀᴛɪsᴛɪᴄs [ᴀᴅᴍɪɴ]</b>\n"
         "- /ban - <b>ᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]</b>\n"
         "- /unban - <b>ᴜɴʙᴀɴ ᴀ ᴜsᴇʀ [ᴀᴅᴍɪɴ]</b>\n"
-        "- /banlist - <b>ᴛ ʙᴀɴɴᴇᴅ ᴜsᴇʀs [ᴀᴅᴍɪɴ]</b>"
+        "- /banlist - <b>ᴛ ʙᴀɴɴᴇᴅ ᴜsᴇʀs [ᴀᴅᴮᴍɪɴ]</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
