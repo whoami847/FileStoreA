@@ -17,7 +17,7 @@ import logging
 from datetime import datetime, timedelta
 from pyrogram import Client, filters, __version__
 from pyrogram.enums import ParseMode, ChatAction
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ReplyKeyboardMarkup, ChatInviteLink, ChatPrivileges
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ReplyKeyboardMarkup, ChatInviteLink, ChatPrivileges, InputMediaPhoto
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated, UserNotParticipant
 from bot import Bot
@@ -81,21 +81,43 @@ async def show_auto_delete_settings(client: Bot, chat_id: int, message_id: int =
         ]
     )
 
+    # Image link to be used
+    image_url = "https://i.postimg.cc/Px15Fkgn/96da122b.jpg"
+
     if message_id:
-        await client.edit_message_text(
-            chat_id=chat_id,
-            message_id=message_id,
-            text=settings_text,
-            reply_markup=keyboard,
-            parse_mode=ParseMode.HTML
-        )
+        try:
+            await client.edit_message_media(
+                chat_id=chat_id,
+                message_id=message_id,
+                media=InputMediaPhoto(media=image_url, caption=settings_text),
+                reply_markup=keyboard
+            )
+        except Exception as e:
+            logger.error(f"Failed to edit message with image: {e}")
+            await client.edit_message_text(
+                chat_id=chat_id,
+                message_id=message_id,
+                text=settings_text,
+                reply_markup=keyboard,
+                parse_mode=ParseMode.HTML
+            )
     else:
-        await client.send_message(
-            chat_id=chat_id,
-            text=settings_text,
-            reply_markup=keyboard,
-            parse_mode=ParseMode.HTML
-        )
+        try:
+            await client.send_photo(
+                chat_id=chat_id,
+                photo=image_url,
+                caption=settings_text,
+                reply_markup=keyboard,
+                parse_mode=ParseMode.HTML
+            )
+        except Exception as e:
+            logger.error(f"Failed to send photo: {e}")
+            await client.send_message(
+                chat_id=chat_id,
+                text=settings_text,
+                reply_markup=keyboard,
+                parse_mode=ParseMode.HTML
+            )
 
 @Bot.on_message(filters.private & filters.command('auto_delete') & admin)
 async def auto_delete_settings(client: Bot, message: Message):
