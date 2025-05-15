@@ -32,7 +32,8 @@ class Mehedi:
         self.banned_user_data = self.db['banned_user']
         self.autho_user_data = self.db['autho_user']
         self.del_timer_data = self.db['del_timer']
-        self.auto_delete_mode_data = self.db['auto_delete_mode']  # New collection for auto delete mode
+        self.auto_delete_mode_data = self.db['auto_delete_mode']
+        self.temp_state_data = self.db['temp_state']  # New collection for temporary state
         self.fsub_data = self.db['fsub']
         self.rqst_fsub_data = self.db['request_forcesub']
         self.rqst_fsub_Channel_data = self.db['request_forcesub_channel']
@@ -118,6 +119,18 @@ class Mehedi:
     async def get_auto_delete_mode(self):
         data = await self.auto_delete_mode_data.find_one({})
         return data.get('enabled', False) if data else False
+
+    async def set_temp_state(self, chat_id: int, state: str):
+        existing = await self.temp_state_data.find_one({'_id': chat_id})
+        if existing:
+            await self.temp_state_data.update_one({'_id': chat_id}, {'$set': {'state': state}})
+        else:
+            await self.temp_state_data.insert_one({'_id': chat_id, 'state': state})
+        logger.info(f"Set temp state for chat {chat_id} to {state}")
+
+    async def get_temp_state(self, chat_id: int):
+        data = await self.temp_state_data.find_one({'_id': chat_id})
+        return data.get('state', '') if data else ''
 
     async def channel_exist(self, channel_id: int):
         found = await self.fsub_data.find_one({'_id': channel_id})
