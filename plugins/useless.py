@@ -67,12 +67,12 @@ async def show_auto_delete_settings(client: Bot, chat_id: int, message_id: int =
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("DISABLE ❌" if auto_delete_mode else "ENABLE ✅", callback_data="toggle_auto_delete"),
-                InlineKeyboardButton("SET TIMER ⏳", callback_data="set_timer")
+                InlineKeyboardButton("• ᴅɪsᴀʙʟᴇᴅ ❌" if auto_delete_mode else "• ᴇɴᴀʙʟᴇᴅ ✅", callback_data="auto_toggle"),
+                InlineKeyboardButton("• sᴇᴛ ᴛɪᴍᴇʀ •", callback_data="auto_set_timer")
             ],
             [
-                InlineKeyboardButton("REFRESH 🔄", callback_data="refresh_auto_delete"),
-                InlineKeyboardButton("BACK 🔙", callback_data="back")
+                InlineKeyboardButton("• ʀᴇғʀᴇsʜ", callback_data="auto_refresh"),
+                InlineKeyboardButton("ʙᴀᴄᴋ •", callback_data="auto_back")
             ]
         ]
     )
@@ -97,33 +97,31 @@ async def show_auto_delete_settings(client: Bot, chat_id: int, message_id: int =
 async def auto_delete_settings(client: Bot, message: Message):
     await show_auto_delete_settings(client, message.chat.id)
 
-@Bot.on_callback_query(filters.regex("toggle_auto_delete"))
-async def toggle_auto_delete(client: Bot, callback: CallbackQuery):
-    current_mode = await db.get_auto_delete_mode()
-    new_mode = not current_mode
-    await db.set_auto_delete_mode(new_mode)
+@Bot.on_callback_query(filters.regex(r"^auto_"))
+async def auto_delete_callback(client: Bot, callback: CallbackQuery):
+    data = callback.data
+    if data == "auto_toggle":
+        current_mode = await db.get_auto_delete_mode()
+        new_mode = not current_mode
+        await db.set_auto_delete_mode(new_mode)
+        await show_auto_delete_settings(client, callback.message.chat.id, callback.message.id)
+        await callback.answer(f"Auto Delete Mode {'Enabled' if new_mode else 'Disabled'}!")
     
-    await show_auto_delete_settings(client, callback.message.chat.id, callback.message.id)
-    await callback.answer(f"Auto Delete Mode {'Enabled' if new_mode else 'Disabled'}!")
-
-@Bot.on_callback_query(filters.regex("set_timer"))
-async def set_timer_prompt(client: Bot, callback: CallbackQuery):
-    await callback.message.reply(
-        "<b>Please provide the duration in seconds for the delete timer.</b>\n"
-        "Example: 300 (for 5 minutes)",
-        parse_mode=ParseMode.HTML
-    )
-    await callback.answer("Enter the duration!")
-
-@Bot.on_callback_query(filters.regex("refresh_auto_delete"))
-async def refresh_auto_delete(client: Bot, callback: CallbackQuery):
-    await show_auto_delete_settings(client, callback.message.chat.id, callback.message.id)
-    await callback.answer("Settings refreshed!")
-
-@Bot.on_callback_query(filters.regex("back"))
-async def back_button(client: Bot, callback: CallbackQuery):
-    await callback.message.delete()
-    await callback.answer("Back to previous menu!")
+    elif data == "auto_set_timer":
+        await callback.message.reply(
+            "<b>Please provide the duration in seconds for the delete timer.</b>\n"
+            "Example: 300 (for 5 minutes)",
+            parse_mode=ParseMode.HTML
+        )
+        await callback.answer("Enter the duration!")
+    
+    elif data == "auto_refresh":
+        await show_auto_delete_settings(client, callback.message.chat.id, callback.message.id)
+        await callback.answer("Settings refreshed!")
+    
+    elif data == "auto_back":
+        await callback.message.delete()
+        await callback.answer("Back to previous menu!")
 
 @Bot.on_message(filters.private & filters.regex(r"^\d+$") & admin)
 async def set_timer(client: Bot, message: Message):
