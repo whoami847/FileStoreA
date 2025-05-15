@@ -13,6 +13,7 @@ import os
 import random
 import sys
 import time
+import logging
 from datetime import datetime, timedelta
 from pyrogram import Client, filters, __version__
 from pyrogram.enums import ParseMode, ChatAction
@@ -23,6 +24,9 @@ from bot import Bot
 from config import *
 from helper_func import *
 from database.database import *
+
+# Set up logging for this module
+logger = logging.getLogger(__name__)
 
 #=====================================================================================##
 
@@ -100,14 +104,19 @@ async def auto_delete_settings(client: Bot, message: Message):
 @Bot.on_callback_query(filters.regex(r"^auto_"))
 async def auto_delete_callback(client: Bot, callback: CallbackQuery):
     data = callback.data
+    chat_id = callback.message.chat.id
+
     if data == "auto_toggle":
         current_mode = await db.get_auto_delete_mode()
         new_mode = not current_mode
         await db.set_auto_delete_mode(new_mode)
-        await show_auto_delete_settings(client, callback.message.chat.id, callback.message.id)
+        await show_auto_delete_settings(client, chat_id, callback.message.id)
         await callback.answer(f"Auto Delete Mode {'Enabled' if new_mode else 'Disabled'}!")
     
     elif data == "auto_set_timer":
+        # Set a state to indicate that we are expecting a timer input
+        await db.set_temp_state(chat_id, "awaiting_timer_input")
+        logger.info(f"Set state to 'awaiting_timer_input' for chat {chat_id}")
         await callback.message.reply(
             "<b>Please provide the duration in seconds for the delete timer.</b>\n"
             "Example: 300 (for 5 minutes)",
@@ -116,7 +125,7 @@ async def auto_delete_callback(client: Bot, callback: CallbackQuery):
         await callback.answer("Enter the duration!")
     
     elif data == "auto_refresh":
-        await show_auto_delete_settings(client, callback.message.chat.id, callback.message.id)
+        await show_auto_delete_settings(client, chat_id, callback.message.id)
         await callback.answer("Settings refreshed!")
     
     elif data == "auto_back":
@@ -125,14 +134,25 @@ async def auto_delete_callback(client: Bot, callback: CallbackQuery):
 
 @Bot.on_message(filters.private & filters.regex(r"^\d+$") & admin)
 async def set_timer(client: Bot, message: Message):
-    # Check if the message is a reply to the set_timer prompt
-    if message.reply_to_message and "Please provide the duration in seconds" in message.reply_to_message.text:
+    chat_id = message.chat.id
+    state = await db.get_temp_state(chat_id)
+    
+    logger.info(f"Received numeric input: {message.text} from chat {chat_id}, current state: {state}")
+
+    # Only process the input if the state is "awaiting_timer_input"
+    if state == "awaiting_timer_input":
         try:
             duration = int(message.text)
             await db.set_del_timer(duration)
             await message.reply(f"<b>Delete Timer has been set to {get_readable_time(duration)}.</b>", parse_mode=ParseMode.HTML)
+            logger.info(f"Set delete timer to {duration} seconds for chat {chat_id}")
+            # Clear the state after processing
+            await db.set_temp_state(chat_id, "")
         except ValueError:
             await message.reply("<b>Please provide a valid duration in seconds.</b>", parse_mode=ParseMode.HTML)
+            logger.error(f"Invalid duration input: {message.text} from chat {chat_id}")
+    else:
+        logger.info(f"Ignoring numeric input: {message.text} as state is not 'awaiting_timer_input' for chat {chat_id}")
 
 #=====================================================================================##
 
