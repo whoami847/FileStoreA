@@ -32,6 +32,7 @@ class Mehedi:
         self.banned_user_data = self.db['banned_user']
         self.autho_user_data = self.db['autho_user']
         self.del_timer_data = self.db['del_timer']
+        self.auto_delete_mode_data = self.db['auto_delete_mode']  # New collection for auto delete mode
         self.fsub_data = self.db['fsub']
         self.rqst_fsub_data = self.db['request_forcesub']
         self.rqst_fsub_Channel_data = self.db['request_forcesub_channel']
@@ -105,6 +106,18 @@ class Mehedi:
     async def get_del_timer(self):
         data = await self.del_timer_data.find_one({})
         return data.get('value', 600) if data else 0
+
+    async def set_auto_delete_mode(self, mode: bool):
+        existing = await self.auto_delete_mode_data.find_one({})
+        if existing:
+            await self.auto_delete_mode_data.update_one({}, {'$set': {'enabled': mode}})
+        else:
+            await self.auto_delete_mode_data.insert_one({'enabled': mode})
+        logger.info(f"Set auto delete mode to {mode}")
+
+    async def get_auto_delete_mode(self):
+        data = await self.auto_delete_mode_data.find_one({})
+        return data.get('enabled', False) if data else False
 
     async def channel_exist(self, channel_id: int):
         found = await self.fsub_data.find_one({'_id': channel_id})
