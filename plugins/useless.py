@@ -1,3 +1,13 @@
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
+
 import asyncio
 import os
 import random
@@ -6,7 +16,7 @@ import time
 from datetime import datetime, timedelta
 from pyrogram import Client, filters, __version__
 from pyrogram.enums import ParseMode, ChatAction
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ReplyKeyboardMarkup, ChatInviteLink, ChatPrivileges
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated, UserNotParticipant
 from bot import Bot
@@ -14,119 +24,126 @@ from config import *
 from helper_func import *
 from database.database import *
 
-# Auto Delete Settings Inline Keyboard
-def get_auto_delete_settings_keyboard():
-    return InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("Disabled ❌", callback_data="auto_delete_off"),
-            InlineKeyboardButton("Set Timer ⏰", callback_data="set_timer")
-        ],
-        [
-            InlineKeyboardButton("Refresh 🔄", callback_data="refresh"),
-            InlineKeyboardButton("Back ⬅️", callback_data="back")
-        ]
-    ])
+#=====================================================================================##
 
-# Show Auto Delete Settings with Image
+@Bot.on_message(filters.command('stats') & admin)
+async def stats(bot: Bot, message: Message):
+    now = datetime.now()
+    delta = now - bot.uptime
+    time = get_readable_time(delta.seconds)
+    await message.reply(BOT_STATS_TEXT.format(uptime=time))
+
+#=====================================================================================##
+
+WAIT_MSG = "<b>ᴡᴏʀᴋɪɴɢ....</b>"
+
+#=====================================================================================##
+
+@Bot.on_message(filters.command('users') & filters.private & admin)
+async def get_users(client: Bot, message: Message):
+    msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
+    users = await db.full_userbase()
+    await msg.edit(f"{len(users)} ᴜꜱᴇʀꜱ ᴀʀᴇ ᴜꜱɪɴɢ ᴛʜɪꜱ ʙᴏᴛ")
+
+#=====================================================================================##
+
+# AUTO-DELETE SETTINGS
+
+# Function to show the auto-delete settings with inline buttons
+async def show_auto_delete_settings(client: Bot, chat_id: int, message_id: int = None):
+    auto_delete_mode = await db.get_auto_delete_mode()
+    delete_timer = await db.get_del_timer()
+    
+    mode_status = "Enabled ✅" if auto_delete_mode else "Disabled ❌"
+    timer_text = get_readable_time(delete_timer)
+
+    settings_text = (
+        "» <b>AUTO DELETE SETTINGS</b>\n\n"
+        f"» <b>AUTO DELETE MODE:</b> {mode_status}\n"
+        f"» <b>DELETE TIMER:</b> {timer_text}\n\n"
+        "<b>CLICK BELOW BUTTONS TO CHANGE SETTINGS</b>"
+    )
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("DISABLE ❌" if auto_delete_mode else "ENABLE ✅", callback_data="toggle_auto_delete"),
+                InlineKeyboardButton("SET TIMER ⏳", callback_data="set_timer")
+            ],
+            [
+                InlineKeyboardButton("REFRESH 🔄", callback_data="refresh_auto_delete"),
+                InlineKeyboardButton("BACK 🔙", callback_data="back")
+            ]
+        ]
+    )
+
+    if message_id:
+        await client.edit_message_text(
+            chat_id=chat_id,
+            message_id=message_id,
+            text=settings_text,
+            reply_markup=keyboard,
+            parse_mode=ParseMode.HTML
+        )
+    else:
+        await client.send_message(
+            chat_id=chat_id,
+            text=settings_text,
+            reply_markup=keyboard,
+            parse_mode=ParseMode.HTML
+        )
+
 @Bot.on_message(filters.private & filters.command('auto_delete') & admin)
 async def auto_delete_settings(client: Bot, message: Message):
-    duration = await db.get_del_timer()
-    if duration:
-        duration_str = f"{duration // 60} Minutes" if duration % 60 == 0 else f"{duration} Seconds"
-    else:
-        duration_str = "Not Set"
+    await show_auto_delete_settings(client, message.chat.id)
+
+@Bot.on_callback_query(filters.regex("toggle_auto_delete"))
+async def toggle_auto_delete(client: Bot, callback: CallbackQuery):
+    current_mode = await db.get_auto_delete_mode()
+    new_mode = not current_mode
+    await db.set_auto_delete_mode(new_mode)
     
-    await message.reply_photo(
-        photo="https://envs.sh/ozr.jpg",
-        caption=f"<b>AUTO DELETE SETTINGS</b>\n"
-                f"> AUTO DELETE MODE: {'ENABLED ✅' if duration else 'DISABLED ❌'}\n"
-                f"> DELETE TIMER: {duration_str}\n\n"
-                f"Click below buttons to change settings",
-        reply_markup=get_auto_delete_settings_keyboard()
+    await show_auto_delete_settings(client, callback.message.chat.id, callback.message.id)
+    await callback.answer(f"Auto Delete Mode {'Enabled' if new_mode else 'Disabled'}!")
+
+@Bot.on_callback_query(filters.regex("set_timer"))
+async def set_timer_prompt(client: Bot, callback: CallbackQuery):
+    await callback.message.reply(
+        "<b>Please provide the duration in seconds for the delete timer.</b>\n"
+        "Example: 300 (for 5 minutes)",
+        parse_mode=ParseMode.HTML
     )
+    await callback.answer("Enter the duration!")
 
-# Handle Callback Queries
-@Bot.on_callback_query(filters.private & admin)
-async def handle_callback(client: Bot, callback_query: CallbackQuery):
-    data = callback_query.data
-    message = callback_query.message
+@Bot.on_callback_query(filters.regex("refresh_auto_delete"))
+async def refresh_auto_delete(client: Bot, callback: CallbackQuery):
+    await show_auto_delete_settings(client, callback.message.chat.id, callback.message.id)
+    await callback.answer("Settings refreshed!")
 
-    if data == "auto_delete_off":
-        await db.set_del_timer(0)  # Disable by setting timer to 0
-        await message.edit_caption(
-            caption=f"<b>AUTO DELETE SETTINGS</b>\n"
-                    f"> AUTO DELETE MODE: DISABLED ❌\n"
-                    f"> DELETE TIMER: Not Set\n\n"
-                    f"Click below buttons to change settings",
-            reply_markup=get_auto_delete_settings_keyboard()
-        )
+@Bot.on_callback_query(filters.regex("back"))
+async def back_button(client: Bot, callback: CallbackQuery):
+    await callback.message.delete()
+    await callback.answer("Back to previous menu!")
 
-    elif data == "set_timer":
-        await message.edit_caption(
-            caption="<b>Enter new delete timer in minutes (e.g., 5 for 5 minutes):</b>",
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Back ⬅️", callback_data="back")]])
-        )
-        await client.listen(message.chat.id, filters=filters.text & admin, timeout=30)
-
-    elif data == "refresh":
-        duration = await db.get_del_timer()
-        duration_str = f"{duration // 60} Minutes" if duration % 60 == 0 else f"{duration} Seconds" if duration else "Not Set"
-        await message.edit_caption(
-            caption=f"<b>AUTO DELETE SETTINGS</b>\n"
-                    f"> AUTO DELETE MODE: {'ENABLED ✅' if duration else 'DISABLED ❌'}\n"
-                    f"> DELETE TIMER: {duration_str}\n\n"
-                    f"Click below buttons to change settings",
-            reply_markup=get_auto_delete_settings_keyboard()
-        )
-
-    elif data == "back":
-        await message.delete()
-        await auto_delete_settings(client, message)
-
-    # Handle timer input
-    elif data.startswith("set_timer_value_"):
+@Bot.on_message(filters.private & filters.regex(r"^\d+$") & admin)
+async def set_timer(client: Bot, message: Message):
+    # Check if the message is a reply to the set_timer prompt
+    if message.reply_to_message and "Please provide the duration in seconds" in message.reply_to_message.text:
         try:
-            timer_value = int(data.split("_")[2])
-            await db.set_del_timer(timer_value * 60)  # Convert minutes to seconds
-            duration_str = f"{timer_value} Minutes"
-            await message.edit_caption(
-                caption=f"<b>AUTO DELETE SETTINGS</b>\n"
-                        f"> AUTO DELETE MODE: ENABLED ✅\n"
-                        f"> DELETE TIMER: {duration_str}\n\n"
-                        f"Click below buttons to change settings",
-                reply_markup=get_auto_delete_settings_keyboard()
-            )
+            duration = int(message.text)
+            await db.set_del_timer(duration)
+            await message.reply(f"<b>Delete Timer has been set to {get_readable_time(duration)}.</b>", parse_mode=ParseMode.HTML)
         except ValueError:
-            await message.edit_caption("<b>Invalid input! Please enter a valid number.</b>")
+            await message.reply("<b>Please provide a valid duration in seconds.</b>", parse_mode=ParseMode.HTML)
 
-# Listen for timer input
-@Bot.on_message(filters.private & filters.text & admin)
-async def set_timer_input(client: Bot, message: Message):
-    try:
-        timer_value = int(message.text)
-        await db.set_del_timer(timer_value * 60)  # Convert minutes to seconds
-        duration_str = f"{timer_value} Minutes"
-        await message.reply_photo(
-            photo="https://envs.sh/ozr.jpg",
-            caption=f"<b>AUTO DELETE SETTINGS</b>\n"
-                    f"> AUTO DELETE MODE: ENABLED ✅\n"
-                    f"> DELETE TIMER: {duration_str}\n\n"
-                    f"Click below buttons to change settings",
-            reply_markup=get_auto_delete_settings_keyboard()
-        )
-    except ValueError:
-        await message.reply("<b>Invalid input! Please enter a valid number in minutes.</b>")
+#=====================================================================================##
 
-# Existing commands (modified for consistency)
-@Bot.on_message(filters.private & filters.command('dlt_time') & admin)
-async def set_delete_time(client: Bot, message: Message):
-    await message.reply("<b>Use /auto_delete command to set delete timer interactively.</b>")
-
-@Bot.on_message(filters.private & filters.command('check_dlt_time') & admin)
-async def check_delete_time(client: Bot, message: Message):
-    duration = await db.get_del_timer()
-    duration_str = f"{duration // 60} Minutes" if duration % 60 == 0 else f"{duration} Seconds" if duration else "Not Set"
-    await message.reply(
-        f"<b>CURRENT DELETE TIMER IS SET TO {duration_str}.</b>",
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Change Settings", callback_data="auto_delete")]])
-    )
+#
+# Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
+#
+# This file is part of < https://github.com/AnimeLord-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
