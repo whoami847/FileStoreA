@@ -9,7 +9,8 @@
 
 import motor.motor_asyncio
 import logging
-from config import DB_URI, DB_NAME
+import os
+from os import environ, getenv
 from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
@@ -263,7 +264,8 @@ class Mehedi:
         )
         logger.info(f"Updated setting {setting_name} to {value}")
 
-db = Mehedi(DB_URI, DB_NAME)
+# Initialize db with environment variables directly
+db = Mehedi(os.environ.get("DATABASE_URL", ""), os.environ.get("DATABASE_NAME", "animelord"))
 
 #
 # Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
