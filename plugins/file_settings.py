@@ -1,99 +1,267 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.handlers import MessageHandler, CallbackQueryHandler
-from pyrogram.types import Update
 from config import PROTECT_CONTENT, HIDE_CAPTION, DISABLE_CHANNEL_BUTTON, BUTTON_NAME, BUTTON_LINK, update_setting, get_settings
+from database.database import db
 
-# States for conversation handler
-SET_BUTTON_NAME, SET_BUTTON_LINK = range(2)
-
-async def show_settings_message(client, message_or_callback, is_callback=False):
+@Client.on_message(filters.command("fsettings") & filters.private)
+async def fsettings(client, message):
     settings = get_settings()
-    
-    # Create the settings text in the requested format
-    settings_text = "ғɪʟᴇs ʀᴇʟᴀᴛᴇᴅ sᴇᴛᴛɪɴɢs:\n\n"
-    settings_text += f"›› ᴘʀᴏᴛᴇᴄᴛ ᴄᴏɴᴛᴇɴᴛ: {'Eɴᴀʙʟᴇᴅ' if settings['PROTECT_CONTENT'] else 'Dɪsᴀʙʟᴇᴅ'} {'✅' if settings['PROTECT_CONTENT'] else '❌'}\n"
-    settings_text += f"›› ʜɪᴅᴇ ᴄᴀᴘᴛɪᴏɴ: {'Eɴᴀʙʟᴇᴅ' if settings['HIDE_CAPTION'] else 'Dɪsᴀʙʟᴇᴅ'} {'✅' if settings['HIDE_CAPTION'] else '❌'}\n"
-    settings_text += f"›› ᴄʜᴀɴɴᴇʟ ʙᴜᴛᴛᴏɴ: {'Eɴᴀʙʟᴇᴅ' if not settings['DISABLE_CHANNEL_BUTTON'] else 'Dɪsᴀʙʟᴇᴅ'} {'✅' if not settings['DISABLE_CHANNEL_BUTTON'] else '❌'}\n\n"
-    settings_text += f"›› ʙᴜᴛᴛᴏɴ Nᴀᴍᴇ: {settings['BUTTON_NAME'] if settings['BUTTON_NAME'] else 'not set'}\n"
-    settings_text += f"›› ʙᴜᴛᴛᴏɴ Lɪɴᴋ: {settings['BUTTON_LINK'] if settings['BUTTON_LINK'] else 'not set'}\n\n"
-    settings_text += "ᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴs ᴛᴏ ᴄʜᴀɴɢᴇ sᴇᴛᴛɪɴɢs"
+    text = (
+        "⚙️ **File Settings**\n\n"
+        f"**Protect Content:** {'✅ Enabled' if settings['PROTECT_CONTENT'] else '❌ Disabled'}\n"
+        f"**Hide Caption:** {'✅ Enabled' if settings['HIDE_CAPTION'] else '❌ Disabled'}\n"
+        f"**Channel Button:** {'✅ Enabled' if not settings['DISABLE_CHANNEL_BUTTON'] else '❌ Disabled'}\n"
+        f"**Custom Button:** {settings['BUTTON_NAME'] if settings['BUTTON_NAME'] else 'Not Set'} ({settings['BUTTON_LINK'] if settings['BUTTON_LINK'] else 'No Link'})"
+    )
 
-    # Create inline buttons for toggling settings
     buttons = [
         [
-            InlineKeyboardButton("PC", callback_data="toggle_protect_content"),
-            InlineKeyboardButton("HC", callback_data="toggle_hide_caption"),
-            InlineKeyboardButton("CB", callback_data="toggle_channel_button"),
-            InlineKeyboardButton("SB", callback_data="set_button"),
+            InlineKeyboardButton("PC", callback_data="toggle_pc"),
+            InlineKeyboardButton("HC", callback_data="toggle_hc"),
+            InlineKeyboardButton("CB", callback_data="toggle_cb")
         ],
+        [InlineKeyboardButton("SB", callback_data="custom_set_button")],
         [
-            InlineKeyboardButton("REFRESH", callback_data="refresh_settings"),
-            InlineKeyboardButton("back", callback_data="go_back"),
+            InlineKeyboardButton("Refresh", callback_data="refresh_settings"),
+            InlineKeyboardButton("Back", callback_data="back_to_start")
         ]
     ]
 
-    if is_callback:
-        await message_or_callback.message.edit_text(
-            settings_text,
-            reply_markup=InlineKeyboardMarkup(buttons)
-        )
-    else:
-        await message_or_callback.reply_text(
-            settings_text,
-            reply_markup=InlineKeyboardMarkup(buttons)
-        )
+    await message.reply(
+        text=text,
+        reply_markup=InlineKeyboardMarkup(buttons),
+        quote=True
+    )
 
-@Client.on_message(filters.command("fsettings") & filters.private)
-async def fsettings_command(client, message):
-    await show_settings_message(client, message)
-
-@Client.on_callback_query(filters.regex("toggle_protect_content"))
+@Client.on_callback_query(filters.regex(r"toggle_pc"))
 async def toggle_protect_content(client, callback_query):
-    await update_setting("PROTECT_CONTENT", not get_settings()["PROTECT_CONTENT"])
-    await show_settings_message(client, callback_query, is_callback=True)
-    await callback_query.answer("Protect Content toggled!")
+    settings = get_settings()
+    new_value = not settings["PROTECT_CONTENT"]
+    await update_setting("PROTECT_CONTENT", new_value)
+    
+    updated_settings = get_settings()
+    text = (
+        "⚙️ **File Settings**\n\n"
+        f"**Protect Content:** {'✅ Enabled' if updated_settings['PROTECT_CONTENT'] else '❌ Disabled'}\n"
+        f"**Hide Caption:** {'✅ Enabled' if updated_settings['HIDE_CAPTION'] else '❌ Disabled'}\n"
+        f"**Channel Button:** {'✅ Enabled' if not updated_settings['DISABLE_CHANNEL_BUTTON'] else '❌ Disabled'}\n"
+        f"**Custom Button:** {updated_settings['BUTTON_NAME'] if updated_settings['BUTTON_NAME'] else 'Not Set'} ({updated_settings['BUTTON_LINK'] if updated_settings['BUTTON_LINK'] else 'No Link'})"
+    )
 
-@Client.on_callback_query(filters.regex("toggle_hide_caption"))
+    buttons = [
+        [
+            InlineKeyboardButton("PC", callback_data="toggle_pc"),
+            InlineKeyboardButton("HC", callback_data="toggle_hc"),
+            InlineKeyboardButton("CB", callback_data="toggle_cb")
+        ],
+        [InlineKeyboardButton("SB", callback_data="custom_set_button")],
+        [
+            InlineKeyboardButton("Refresh", callback_data="refresh_settings"),
+            InlineKeyboardButton("Back", callback_data="back_to_start")
+        ]
+    ]
+
+    await callback_query.message.edit(
+        text=text,
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+    await callback_query.answer("Protect Content setting updated!")
+
+@Client.on_callback_query(filters.regex(r"toggle_hc"))
 async def toggle_hide_caption(client, callback_query):
-    await update_setting("HIDE_CAPTION", not get_settings()["HIDE_CAPTION"])
-    await show_settings_message(client, callback_query, is_callback=True)
-    await callback_query.answer("Hide Caption toggled!")
+    settings = get_settings()
+    new_value = not settings["HIDE_CAPTION"]
+    await update_setting("HIDE_CAPTION", new_value)
+    
+    updated_settings = get_settings()
+    text = (
+        "⚙️ **File Settings**\n\n"
+        f"**Protect Content:** {'✅ Enabled' if updated_settings['PROTECT_CONTENT'] else '❌ Disabled'}\n"
+        f"**Hide Caption:** {'✅ Enabled' if updated_settings['HIDE_CAPTION'] else '❌ Disabled'}\n"
+        f"**Channel Button:** {'✅ Enabled' if not updated_settings['DISABLE_CHANNEL_BUTTON'] else '❌ Disabled'}\n"
+        f"**Custom Button:** {updated_settings['BUTTON_NAME'] if updated_settings['BUTTON_NAME'] else 'Not Set'} ({updated_settings['BUTTON_LINK'] if updated_settings['BUTTON_LINK'] else 'No Link'})"
+    )
 
-@Client.on_callback_query(filters.regex("toggle_channel_button"))
+    buttons = [
+        [
+            InlineKeyboardButton("PC", callback_data="toggle_pc"),
+            InlineKeyboardButton("HC", callback_data="toggle_hc"),
+            InlineKeyboardButton("CB", callback_data="toggle_cb")
+        ],
+        [InlineKeyboardButton("SB", callback_data="custom_set_button")],
+        [
+            InlineKeyboardButton("Refresh", callback_data="refresh_settings"),
+            InlineKeyboardButton("Back", callback_data="back_to_start")
+        ]
+    ]
+
+    await callback_query.message.edit(
+        text=text,
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+    await callback_query.answer("Hide Caption setting updated!")
+
+@Client.on_callback_query(filters.regex(r"toggle_cb"))
 async def toggle_channel_button(client, callback_query):
-    await update_setting("DISABLE_CHANNEL_BUTTON", not get_settings()["DISABLE_CHANNEL_BUTTON"])
-    await show_settings_message(client, callback_query, is_callback=True)
-    await callback_query.answer("Channel Button toggled!")
+    settings = get_settings()
+    new_value = not settings["DISABLE_CHANNEL_BUTTON"]
+    await update_setting("DISABLE_CHANNEL_BUTTON", new_value)
+    
+    updated_settings = get_settings()
+    text = (
+        "⚙️ **File Settings**\n\n"
+        f"**Protect Content:** {'✅ Enabled' if updated_settings['PROTECT_CONTENT'] else '❌ Disabled'}\n"
+        f"**Hide Caption:** {'✅ Enabled' if updated_settings['HIDE_CAPTION'] else '❌ Disabled'}\n"
+        f"**Channel Button:** {'✅ Enabled' if not updated_settings['DISABLE_CHANNEL_BUTTON'] else '❌ Disabled'}\n"
+        f"**Custom Button:** {updated_settings['BUTTON_NAME'] if updated_settings['BUTTON_NAME'] else 'Not Set'} ({updated_settings['BUTTON_LINK'] if updated_settings['BUTTON_LINK'] else 'No Link'})"
+    )
 
-@Client.on_callback_query(filters.regex("refresh_settings"))
-async def refresh_settings_message(client, callback_query):
-    await show_settings_message(client, callback_query, is_callback=True)
+    buttons = [
+        [
+            InlineKeyboardButton("PC", callback_data="toggle_pc"),
+            InlineKeyboardButton("HC", callback_data="toggle_hc"),
+            InlineKeyboardButton("CB", callback_data="toggle_cb")
+        ],
+        [InlineKeyboardButton("SB", callback_data="custom_set_button")],
+        [
+            InlineKeyboardButton("Refresh", callback_data="refresh_settings"),
+            InlineKeyboardButton("Back", callback_data="back_to_start")
+        ]
+    ]
+
+    await callback_query.message.edit(
+        text=text,
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+    await callback_query.answer("Channel Button setting updated!")
+
+@Client.on_callback_query(filters.regex(r"custom_set_button"))
+async def set_button(client, callback_query):
+    await db.set_temp_state(callback_query.from_user.id, "awaiting_button_name")
+    await callback_query.message.edit(
+        text="Please send the button name (e.g., 'Join Channel'):",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("Cancel", callback_data="cancel_set_button")]
+        ])
+    )
+    await callback_query.answer()
+
+@Client.on_message(filters.text & filters.private)
+async def handle_button_input(client, message):
+    user_id = message.from_user.id
+    state = await db.get_temp_state(user_id)
+
+    if state == "awaiting_button_name":
+        button_name = message.text
+        await db.set_temp_state(user_id, f"awaiting_button_link_{button_name}")
+        await message.reply(
+            text=f"Button name set to: {button_name}\nNow, please send the button link (e.g., 'https://t.me/yourchannel'):",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("Cancel", callback_data="cancel_set_button")]
+            ])
+        )
+    elif state.startswith("awaiting_button_link_"):
+        button_name = state.split("awaiting_button_link_")[1]
+        button_link = message.text
+
+        # Update the button settings
+        await update_setting("BUTTON_NAME", button_name)
+        await update_setting("BUTTON_LINK", button_link)
+
+        # Clear the temp state
+        await db.set_temp_state(user_id, "")
+
+        # Update the settings message
+        settings = get_settings()
+        text = (
+            "⚙️ **File Settings**\n\n"
+            f"**Protect Content:** {'✅ Enabled' if settings['PROTECT_CONTENT'] else '❌ Disabled'}\n"
+            f"**Hide Caption:** {'✅ Enabled' if settings['HIDE_CAPTION'] else '❌ Disabled'}\n"
+            f"**Channel Button:** {'✅ Enabled' if not settings['DISABLE_CHANNEL_BUTTON'] else '❌ Disabled'}\n"
+            f"**Custom Button:** {settings['BUTTON_NAME'] if settings['BUTTON_NAME'] else 'Not Set'} ({settings['BUTTON_LINK'] if settings['BUTTON_LINK'] else 'No Link'})"
+        )
+
+        buttons = [
+            [
+                InlineKeyboardButton("PC", callback_data="toggle_pc"),
+                InlineKeyboardButton("HC", callback_data="toggle_hc"),
+                InlineKeyboardButton("CB", callback_data="toggle_cb")
+            ],
+        [InlineKeyboardButton("SB", callback_data="custom_set_button")],
+            [
+                InlineKeyboardButton("Refresh", callback_data="refresh_settings"),
+                InlineKeyboardButton("Back", callback_data="back_to_start")
+            ]
+        ]
+
+        await message.reply(
+            text=text,
+            reply_markup=InlineKeyboardMarkup(buttons)
+        )
+
+@Client.on_callback_query(filters.regex(r"cancel_set_button"))
+async def cancel_set_button(client, callback_query):
+    await db.set_temp_state(callback_query.from_user.id, "")
+    settings = get_settings()
+    text = (
+        "⚙️ **File Settings**\n\n"
+        f"**Protect Content:** {'✅ Enabled' if settings['PROTECT_CONTENT'] else '❌ Disabled'}\n"
+        f"**Hide Caption:** {'✅ Enabled' if settings['HIDE_CAPTION'] else '❌ Disabled'}\n"
+        f"**Channel Button:** {'✅ Enabled' if not settings['DISABLE_CHANNEL_BUTTON'] else '❌ Disabled'}\n"
+        f"**Custom Button:** {settings['BUTTON_NAME'] if settings['BUTTON_NAME'] else 'Not Set'} ({settings['BUTTON_LINK'] if settings['BUTTON_LINK'] else 'No Link'})"
+    )
+
+    buttons = [
+        [
+            InlineKeyboardButton("PC", callback_data="toggle_pc"),
+            InlineKeyboardButton("HC", callback_data="toggle_hc"),
+            InlineKeyboardButton("CB", callback_data="toggle_cb")
+        ],
+        [InlineKeyboardButton("SB", callback_data="custom_set_button")],
+        [
+            InlineKeyboardButton("Refresh", callback_data="refresh_settings"),
+            InlineKeyboardButton("Back", callback_data="back_to_start")
+        ]
+    ]
+
+    await callback_query.message.edit(
+        text=text,
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+    await callback_query.answer("Cancelled button setting.")
+
+@Client.on_callback_query(filters.regex(r"refresh_settings"))
+async def refresh_settings(client, callback_query):
+    settings = get_settings()
+    text = (
+        "⚙️ **File Settings**\n\n"
+        f"**Protect Content:** {'✅ Enabled' if settings['PROTECT_CONTENT'] else '❌ Disabled'}\n"
+        f"**Hide Caption:** {'✅ Enabled' if settings['HIDE_CAPTION'] else '❌ Disabled'}\n"
+        f"**Channel Button:** {'✅ Enabled' if not settings['DISABLE_CHANNEL_BUTTON'] else '❌ Disabled'}\n"
+        f"**Custom Button:** {settings['BUTTON_NAME'] if settings['BUTTON_NAME'] else 'Not Set'} ({settings['BUTTON_LINK'] if settings['BUTTON_LINK'] else 'No Link'})"
+    )
+
+    buttons = [
+        [
+            InlineKeyboardButton("PC", callback_data="toggle_pc"),
+            InlineKeyboardButton("HC", callback_data="toggle_hc"),
+            InlineKeyboardButton("CB", callback_data="toggle_cb")
+        ],
+        [InlineKeyboardButton("SB", callback_data="custom_set_button")],
+        [
+            InlineKeyboardButton("Refresh", callback_data="refresh_settings"),
+            InlineKeyboardButton("Back", callback_data="back_to_start")
+        ]
+    ]
+
+    await callback_query.message.edit(
+        text=text,
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
     await callback_query.answer("Settings refreshed!")
 
-@Client.on_callback_query(filters.regex("go_back"))
-async def go_back(client, callback_query):
+@Client.on_callback_query(filters.regex(r"back_to_start"))
+async def back_to_start(client, callback_query):
     await callback_query.message.delete()
-    await callback_query.answer("Back to main menu!")
-
-@Client.on_callback_query(filters.regex("set_button"))
-async def set_button_start(client, callback_query):
-    await callback_query.message.reply_text("Please enter the new Button Name:")
+    await callback_query.message.reply("Back to start! Use /start to begin again.")
     await callback_query.answer()
-    # Register the next step handler for Button Name
-    client.add_handler(MessageHandler(set_button_name, filters.private & filters.user(callback_query.from_user.id)), group=1)
-
-async def set_button_name(client, message):
-    new_button_name = message.text.strip()
-    await update_setting("BUTTON_NAME", new_button_name)
-    await message.reply_text("Button Name updated! Now enter the new Button Link:")
-    # Register the next step handler for Button Link
-    client.add_handler(MessageHandler(set_button_link, filters.private & filters.user(message.from_user.id)), group=1)
-
-async def set_button_link(client, message):
-    new_button_link = message.text.strip()
-    await update_setting("BUTTON_LINK", new_button_link)
-    await message.reply_text("Button Link updated! Use /fsettings to see the updated settings.")
-    # Remove the handlers to clean up
-    client.remove_handler(MessageHandler(set_button_name, filters.private & filters.user(message.from_user.id)), group=1)
-    client.remove_handler(MessageHandler(set_button_link, filters.private & filters.user(message.from_user.id)), group=1)
