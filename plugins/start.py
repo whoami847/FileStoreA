@@ -136,6 +136,10 @@ async def start_command(client: Client, message: Message):
         finally:
             await temp_msg.delete()
         animelord_msgs = []
+        # Load settings dynamically before copying messages
+        settings = await db.get_settings()
+        PROTECT_CONTENT = settings.get('PROTECT_CONTENT', False)
+        print(f"Copying message with PROTECT_CONTENT={PROTECT_CONTENT}")
         for msg in messages:
             caption = (CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html,
                                              filename=msg.document.file_name) if bool(CUSTOM_CAPTION) and bool(msg.document)
@@ -196,7 +200,7 @@ async def start_command(client: Client, message: Message):
             message_effect_id=random.choice(MESSAGE_EFFECT_IDS)
         )
     except Exception as e:
-        print(f"ᴇʀʀᴏʀ sᴇɴᴅɪɴɢ sᴛᴀʰʀᴛ ᴘʜᴏᴛᴏ: {e}")
+        print(f"ᴇʀʀᴏʀ sᴇɴᴅɪɴɢ sᴛᴀʜʀᴛ ᴘʜᴏᴛᴏ: {e}")
         await asyncio.sleep(0.5)
         await message.reply_photo(
             photo=START_PIC,
@@ -418,7 +422,7 @@ async def broadcast_cmd(bot: Bot, message: Message):
 async def force_chn_cmd(bot: Bot, message: Message):
     reply_text = (
         "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ғᴏʀᴄᴇ sᴜʙ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
-        "<b>ᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
+        "<b>ᴏᴛ ᴄᴏᴍᴮᴍᴀɴᴅs:</b></blockquote>\n"
         "- /fsub_mode - <b>ᴛᴏɢɢʟᴇ ғᴏʀᴄᴇ-sᴜʙsᴄʀɪʙᴇ [ᴀᴅᴍɪɴ]</b>\n"
         "- /addchnl - <b>ᴀᴅᴅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]</b>\n"
         "- /delchnl - <b>ᴇᴍᴏᴠᴇ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ [ᴀᴅᴍɪɴ]</b>\n"
@@ -430,10 +434,10 @@ async def force_chn_cmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('auto_dlt_cmd') & filters.private & admin)
 async def auto_dlt_cmd(bot: Bot, message: Message):
     reply_text = (
-        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
-        "<b>ᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
-        "- /dlt_time - sᴇᴛ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]</b>\n"
-        "- /check_dlt_time - <b>ᴄʜᴇᴄᴋ ᴅᴇʟᴇᴛᴇ ᴛɪᴍᴇ [ᴀᴅᴍɪɴ]</b>"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ ᴄᴏᴍᴮᴍᴀɴᴅs.</b>\n\n"
+        "<b>ᴏᴛ ᴄᴏᴍᴮᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /dlt_time - sᴇᴛ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇ ᴛɪᴮᴍᴇ [ᴀᴅᴍɪɴ]</b>\n"
+        "- /check_dlt_time - <b>ᴄʜᴇᴄᴋ ᴅᴇʟᴇᴛᴇ ᴛɪᴮᴍᴇ [ᴀᴅᴍɪɴ]</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
     await message.reply_text(reply_text, reply_markup=reply_markup)
@@ -441,11 +445,11 @@ async def auto_dlt_cmd(bot: Bot, message: Message):
 @Bot.on_message(filters.command('links_cmd') & filters.private & admin)
 async def links_cmd(bot: Bot, message: Message):
     reply_text = (
-        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ sɪɴɢʟᴇ ғɪʟᴇ, ʙᴀᴛᴄʜ ᴀɴᴅ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ʟɪɴᴋs ᴄᴏᴍᴍᴀɴᴅs.</b>\n\n"
-        "<b>ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs:</b></blockquote>\n"
-        "- /batch - <b>ᴄʀᴇᴀᴛᴇ ʟɪɴᴋs ғᴏʀ ᴍᴜʟᴛɪᴘʟᴇ ᴘᴏsᴛs</b>\n"
-        "- /flink - <b>ꜱᴇᴛ ᴀᴜᴛᴏ ʙᴀᴛᴄʜ ꜰᴏʀᴍᴀᴛ</b>\n"
-        "- /custom_batch - <b>ᴄʀᴇᴀᴛᴇ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ғʀᴏᴍ ᴄʜᴀɴɴᴇʟ/ɢʀᴏᴜᴘ</b>\n"
+        "<blockquote><b>ᴜsᴇ ᴛʜᴇsᴇ ᴄᴏᴍᴮᴍᴀɴᴅs ᴛᴏ ɢᴇᴛ sɪɴɢʟᴇ ғɪʟᴇ, ʙᴀᴛᴄʜ ᴀɴᴅ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ʟɪɴᴋs ᴄᴏᴍᴮᴍᴀɴᴅs.</b>\n\n"
+        "<b>ʙᴏᴛ ᴄᴏᴍᴮᴍᴀɴᴅs:</b></blockquote>\n"
+        "- /batch - <b>ᴄʀᴇᴀᴛᴇ ʟɪɴᴋs ғᴏʀ ᴮᴍᴜʟᴛɪᴘʟᴇ ᴘᴏsᴛs</b>\n"
+        "- /flink - <b>ꜱᴇᴛ ᴀᴜᴛᴏ ʙᴀᴛᴄʜ ꜰᴏʀᴮᴍᴀᴛ</b>\n"
+        "- /custom_batch - <b>ᴄʀᴇᴀᴛᴇ ᴄᴜsᴛᴏᴍ ʙᴀᴛᴄʜ ғʀᴏᴮᴍ ᴄʜᴀɴɴᴇʟ/ɢʀᴏᴜᴘ</b>\n"
         "- /genlink - <b>ᴄʀᴇᴀᴛᴇ ʟɪɴᴋ ғᴏʀ ᴀ sɪɴɢʟᴇ ᴘᴏsᴛ</b>"
     )
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")]])
