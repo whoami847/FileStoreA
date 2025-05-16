@@ -50,7 +50,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             )
         except Exception as e:
             print(f"ᴇʀʀᴏʀ ɪɴ ʜᴇʟᴘ ᴄᴀʟʟʙᴀᴄᴋ: {e}")
-            await query.message.edit_text("ᴀɴ ᴇʀʀᴏʰʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ᴜᴘᴅᴀᴛɪɴɢ ᴛʜᴇ ʜᴇʟᴘ ᴍᴇssᴀɢᴇ.")
+            await query.message.edit_text("ᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ᴜᴘᴅᴀᴛɪɴɢ ᴛʜᴇ ʜᴇʟᴘ ᴍᴇssᴀɢᴇ.")
         await query.answer()
 
     elif data == "about":
@@ -109,18 +109,18 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 f"🎖️ ᴀᴠᴀɪʟᴀʙʟᴇ ᴘʟᴀɴs :\n\n"
                 f"● {PRICE1}  ғᴏʀ 0 ᴅᴀʏs ᴘʀɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n"
                 f"● {PRICE2}  ғᴏʀ 1 ᴍᴏɴᴛʜ ᴘʀɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n"
-                f"● {PRICE3}  ғᴏʀ 3 ᴍᴏɴᴛʜs ᴘʀɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n"
-                f"● {PRICE4}  ғᴏʀ 6 ᴍᴏɴᴛʜs ᴘʀɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n"
-                f"● {PRICE5}  ғᴏʀ 1 ʏᴇᴀʀ ᴘʀɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n\n"
-                f"💵 ᴀsᴋ ᴜᴘɪ ɪᴅ ᴛᴏ ᴀᴅᴍɪɴ ᴀɴᴅ ᴘᴀʏ ᴛʜᴇʀᴇ -  <code>{UPI_ID}</code>\n\n\n"
-                f"♻️ ᴘᴀʏᴍᴇɴᴛ ʏᴏᴜ ᴡɪʟʟ ɢᴇᴛ ɪɴsᴛᴀɴᴛ ᴍᴇᴍʙᴇʀsʜɪᴘ \n\n\n"
-                f"‼️ ᴍᴜsᴛ sᴇɴᴅ sᴄʀᴇᴇɴsʜᴏᴛ ᴀғᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ & ɪғ ᴀɴʏᴏɴᴇ ᴡᴀɴᴛ ᴄᴜsᴛᴏᴍ ᴛɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ ᴛʜᴇɴ ᴀsᴋ ᴀᴅᴍɪɴ"
+                f"● {PRICE3}  ғᴏʀ 3 ᴍᴏɴᴛʜs ᴘʀɪᴮᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ\n\n"
+                f"● {PRICE4}  ғᴏʀ 6 ᴮᴍᴏɴᴛʜs ᴘʀɪᴮᴍᴇ ᴮᴍᴇᴮᴍʙᴇʀsʜɪᴘ\n\n"
+                f"● {PRICE5}  ғᴏʀ 1 ʏᴇᴀʀ ᴘʀɪᴮᴍᴇ ᴮᴍᴇᴮᴍʙᴇʀsʜɪᴘ\n\n\n"
+                f"💵 ᴀsᴋ ᴜᴘɪ ɪᴅ ᴛᴏ ᴀᴅᴮᴍɪɴ ᴀɴᴅ ᴘᴀʏ ᴛʜᴇʀᴇ -  <code>{UPI_ID}</code>\n\n\n"
+                f"♻️ ᴘᴀʏᴮᴍᴇɴᴛ ʏᴏᴜ ᴡɪʟʟ ɢᴇᴛ ɪɴsᴛᴀɴᴛ ᴮᴍᴇᴮᴍʙᴇʀsʜɪᴘ \n\n\n"
+                f"‼️ ᴮᴍᴜsᴛ sᴇɴᴅ sᴄʀᴇᴇɴsʜᴏᴛ ᴀғᴛᴇʀ ᴘᴀʏᴮᴍᴇɴᴛ & ɪғ ᴀɴʏᴏɴᴇ ᴡᴀɴᴛ ᴄᴜsᴛᴏᴮᴍ ᴛɪᴮᴍᴇ ᴮᴍᴇᴮᴍʙᴇʀsʜɪᴘ ᴛʜᴇɴ ᴀsᴋ ᴀᴅᴮᴍɪɴ"
             ),
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
-                            "ᴀᴅᴍɪɴ 24/7", url=(SCREENSHOT_URL)
+                            "ᴀᴅᴮᴍɪɴ 24/7", url=(SCREENSHOT_URL)
                         )
                     ],
                     [InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close")],
@@ -152,7 +152,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 [InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="fsub_back")]
             ]
             await query.message.edit_text(
-                f"ᴄʜᴀɴɴᴇʟ: {chat.title}\nᴄᴜʀʀᴇɴᴛ ғᴏʀᴄᴇ-sᴜʙ ᴍᴏᴅᴇ: {status}",
+                f"ᴄʜᴀɴɴᴇʟ: {chat.title}\nᴄᴜʀʀᴇɴᴛ ғᴏʀᴄᴇ-sᴜʙ ᴮᴍᴏᴅᴇ: {status}",
                 reply_markup=InlineKeyboardMarkup(buttons)
             )
         except Exception:
@@ -168,11 +168,11 @@ async def cb_handler(client: Bot, query: CallbackQuery):
         status = "🟢 ᴏɴ" if mode == "on" else "🔴 ᴏғғ"
         new_mode = "off" if mode == "on" else "on"
         buttons = [
-            [InlineKeyboardButton(f"ʀᴇǫ ᴍᴏᴅᴇ {'off' if mode == 'on' else 'on'}", callback_data=f"rfs_toggle_{cid}_{new_mode}")],
+            [InlineKeyboardButton(f"ʀᴇǫ ᴮᴍᴏᴅᴇ {'off' if mode == 'on' else 'on'}", callback_data=f"rfs_toggle_{cid}_{new_mode}")],
             [InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="fsub_back")]
         ]
         await query.message.edit_text(
-            f"ᴄʜᴀɴɴᴇʟ: {chat.title}\nᴄᴜʀʀᴇɴᴛ ғᴏʀᴄᴇ-sᴜʙ ᴍᴏᴅᴇ: {status}",
+            f"ᴄʜᴀɴɴᴇʟ: {chat.title}\nᴄᴜʀʀᴇɴᴛ ғᴏʀᴄᴇ-sᴜʙ ᴮᴍᴏᴅᴇ: {status}",
             reply_markup=InlineKeyboardMarkup(buttons)
         )
 
@@ -188,25 +188,26 @@ async def cb_handler(client: Bot, query: CallbackQuery):
             except:
                 continue
         await query.message.edit_text(
-            "sᴇʟᴇᴄᴛ ᴀ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴛᴏɢɢʟᴇ ɪᴛs ғᴏʀᴄᴇ-sᴜʙ ᴍᴏᴅᴇ:",
+            "sᴇʟᴇᴄᴛ ᴀ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴛᴏɢɢʟᴇ ɪᴛs ғᴏʀᴄᴇ-sᴜʙ ᴮᴍᴏᴅᴇ:",
             reply_markup=InlineKeyboardMarkup(buttons)
         )
         await query.answer()
 
-    elif data.startswith("set_"):
+    elif data.startswith("set_") and data.split("_")[1] in ["start", "force"]:
         type = data.split("_")[1]
+        print(f"Set image callback triggered for type: {type}")
         await db.set_temp_state(query.message.chat.id, f"set_{type}")
-        await query.message.reply_text(f"ᴘʟᴇᴀsᴇ sᴇɴᴅ ᴍᴇ ᴛʜᴇ {type} ɪᴍᴀɢᴇ.")
+        await query.message.reply_text(f"ᴘʟᴇᴀsᴇ sᴇɴᴅ ᴮᴍᴇ ᴛʜᴇ {type} ɪᴮᴍᴀɢᴇ.")
         await query.answer()
 
     elif data.startswith("remove_"):
         type = data.split("_")[1]
         images = await db.get_images(type)
         if not images:
-            await query.message.reply_text(f"ᴛʜᴇʀᴇ ᴀʀᴇ ɴᴏ {type} ɪᴍᴀɢᴇs sᴇᴛ.")
+            await query.message.reply_text(f"ᴛʜᴇʀᴇ ᴀʀᴇ ɴᴏ {type} ɪᴮᴍᴀɢᴇs sᴇᴛ.")
         else:
             nums = list(range(1, len(images) + 1))
-            text = f"ᴄᴜʀʀᴇɴᴛ {type} ɪᴍᴀɢᴇs: {', '.join(map(str, nums))}\nᴛᴏ ʀᴇᴍᴏᴠᴇ ᴀ sɪɴɢʟᴇ ɪᴍᴀɢᴇ, ᴜsᴇ /rev_{type} <number>\nᴛᴏ ʀᴇᴍᴏᴠᴇ ᴀʟʟ, ᴜsᴇ /rev_all_{type}"
+            text = f"ᴄᴜʀʀᴇɴᴛ {type} ɪᴮᴍᴀɢᴇs: {', '.join(map(str, nums))}\nᴛᴏ ʀᴇᴮᴍᴏᴠᴇ ᴀ sɪɴɢʟᴇ ɪᴮᴍᴀɢᴇ, ᴜsᴇ /rev_{type} <number>\nᴛᴏ ʀᴇᴮᴍᴏᴠᴇ ᴀʟʟ, ᴜsᴇ /rev_all_{type}"
             await query.message.reply_text(text)
         await query.answer()
 
@@ -218,4 +219,5 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 # Please see < https://github.com/AnimeLord-Bots/FileStore/blob/master/LICENSE >
 #
 # All rights reserved.
+#
 #
