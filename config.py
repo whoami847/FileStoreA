@@ -93,11 +93,11 @@ CMD_TXT = """<blockquote><b>» ᴀᴅᴍɪɴ ᴄᴏᴍᴍᴀɴᴅs:</b></blockqu
 <b>›› /pbroadcast :</b> sᴇɴᴅ ᴘʜᴏᴛᴏ ᴛᴏ ᴀʟʟ ᴜsᴇʀs
 <b>›› /add_admin :</b> ᴀᴅᴅ ᴀɴ ᴀᴅᴍɪɴ
 <b>›› /deladmin :</b> ʀᴇᴍᴏᴠᴇ ᴀɴ ᴀᴅᴍɪɴ
-<b>›› /admins :</b> ɢᴇᴛ ʟɪsᴛ ᴏꜰ ᴀᴅᴍɪɴs
+<b>›› /admins :</b> ɢᴇᴛ ʟɪsᴛ ᴏꜴ ᴀᴅᴍɪɴs
 <b>›› /addpremium :</b> ᴀᴅᴅ ᴀ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀ
 <b>›› /delpremium :</b> ʀᴇᴍᴏᴠᴇ ᴀ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀ
 <b>›› /premiumusers :</b> ɢᴇᴛ ʟɪsᴛ ᴏꜰ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀs
-<b>›› /broadcast :</b> ʙʀᴏᴀᴅᴄᴀsᴛ ᴍᴇssᴀɢᴇ ᴛᴏ ᴀʟʟ ᴜꜱᴇʀs
+<b>›› /broadcast :</b> ʙʀᴏᴀᴅᴄᴀsᴛ ᴍᴇssᴀɢᴇ ᴛᴏ ᴀʟʟ ᴜsᴇʀs
 <b>›› /stats :</b> ɢᴇᴛ ʙᴏᴛ sᴛᴀᴛs
 <b>›› /logs :</b> ɢᴇᴛ ʟᴏɢs ᴏꜰ ʙᴏᴛ
 <b>›› /setvar :</b> sᴇᴛ ᴇɴᴠɪʀᴏɴᴍᴇɴᴛ ᴠᴀʀɪᴀʙʟᴇ
@@ -131,14 +131,12 @@ PRICE5 = os.environ.get("PRICE5", "550 rs")
 
 # ====================(END)========================#
 
-# Load settings from database
-settings = db.get_settings()  # This is an async call, so we'll handle it in bot.py
-
-PROTECT_CONTENT = settings.get('PROTECT_CONTENT', False)
-HIDE_CAPTION = settings.get('HIDE_CAPTION', False)
-DISABLE_CHANNEL_BUTTON = settings.get('DISABLE_CHANNEL_BUTTON', True)
-BUTTON_NAME = settings.get('BUTTON_NAME', None)
-BUTTON_LINK = settings.get('BUTTON_LINK', None)
+# Default settings (loaded dynamically in bot.py)
+PROTECT_CONTENT = False
+HIDE_CAPTION = False
+DISABLE_CHANNEL_BUTTON = True
+BUTTON_NAME = None
+BUTTON_LINK = None
 
 # Function to update settings (used by file_settings.py)
 async def update_setting(setting_name, value):
