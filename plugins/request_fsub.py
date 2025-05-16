@@ -172,19 +172,19 @@ async def handle_channel_input(client: Client, message: Message):
     
     logger.info(f"Received input: {message.text} from chat {chat_id}, current state: {state}")
 
-    if state == "awaiting_add_channel_input":
-        try:
+    try:
+        if state == "awaiting_add_channel_input":
             channel_id = int(message.text)
             all_channels = await db.show_channels()
             channel_ids_only = [cid if isinstance(cid, int) else cid[0] for cid in all_channels]
             if channel_id in channel_ids_only:
-                await message.reply(f"<blockquote><b>ᴄʜᴀɴɴᴇʟ ᴀʟʀᴇᴀᴅʏ ᴇxɪsᴛs:</b></blockquote>\n <blockquote><code>{channel_id}</code></blockquote>")
+                await message.reply(f"<blockquote><b>ᴄʜᴀɴɴᴇʟ ᴀʟʀᴇ�.aᴅʏ ᴇxɪsᴛs:</b></blockquote>\n <blockquote><code>{channel_id}</code></blockquote>")
                 return
 
             chat = await client.get_chat(channel_id)
 
             if chat.type != ChatType.CHANNEL:
-                await message.reply("<b>❌ ᴏɴʟʏ ᴘᴜʙʟɪᴄ ᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜᴀɴɴᴇʟs ᴀʀᴇ ᴀʟʟᴏᴡᴇᴅ.</b>")
+                await message.reply("<b>❌ ᴏɴʟʏ ᴘᴜʙʟɪᴄ ᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜ�.aɴɴᴇʟs ᴀʀᴇ ᴀʟʟᴏᴡᴇᴅ.</b>")
                 return
 
             member = await client.get_chat_member(chat.id, "me")
@@ -201,38 +201,36 @@ async def handle_channel_input(client: Client, message: Message):
                 f"<blockquote><b>ɪᴅ:</b></blockquote>\n <code>{channel_id}</code>",
                 disable_web_page_preview=True
             )
-        except ValueError:
-            await message.reply("<blockquote><b>❌ ɪɴᴠᴀʟɪᴅ ᴄʜᴀɴɴᴇʟ ɪᴅ!</b></blockquote>")
-        except Exception as e:
-            await message.reply(f"<blockquote><b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b></blockquote>\n<code>{message.text}</code>\n\n<i>{e}</i>")
-        finally:
-            await db.set_temp_state(chat_id, "")
 
-    elif state == "awaiting_remove_channel_input":
-        all_channels = await db.show_channels()
-        if message.text.lower() == "all":
-            if not all_channels:
-                await message.reply("<blockquote><b>❌ ɴᴏ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs ғᴏᴜɴᴅ.</b></blockquote>")
-                return
-            for ch_id in all_channels:
-                await db.rem_channel(ch_id)
-            await message.reply("<blockquote><b>✅ ᴀʟʟ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs ʀᴇᴍᴏᴠᴇᴅ.</b></blockquote>")
-        else:
-            try:
-                ch_id = int(message.text)
-                if ch_id in all_channels:
+        elif state == "awaiting_remove_channel_input":
+            all_channels = await db.show_channels()
+            if message.text.lower() == "all":
+                if not all_channels:
+                    await message.reply("<blockquote><b>❌ ɴᴏ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs ғᴏᴜɴᴅ.</b></blockquote>")
+                    return
+                for ch_id in all_channels:
                     await db.rem_channel(ch_id)
-                    await message.reply(f"<blockquote><b>✅ ᴄʜᴀɴɴᴇʟ ʀᴇᴍᴏᴠᴇᴅ:</b></blockquote>\n <code>{ch_id}</code>")
-                else:
-                    await message.reply(f"<blockquote><b>❌ ᴄʜᴀɴɴᴇʟ ɴᴏᴛ ғᴏᴜɴᴅ:</b></blockquote>\n <code>{ch_id}</code>")
-            except ValueError:
-                await message.reply(
-                    "<blockquote><b>ᴜꜱᴀɢᴇ:</b></blockquote>\n <code>/delchnl <channel_id | all</code>",
-                )
-            except Exception as e:
-                await message.reply(f"<blockquote><b>❌ ᴇʀʀᴏʀ:</b></blockquote>\n <code>{e}</code>")
-        finally:
-            await db.set_temp_state(chat_id, "")
+                await message.reply("<blockquote><b>✅ ᴀʟʟ ғᴏʀᴄᴇ-sᴜʙ ᴄʜ�.aɴɴᴇʟs ʀᴇᴍᴏᴠᴇᴅ.</b></blockquote>")
+            else:
+                try:
+                    ch_id = int(message.text)
+                    if ch_id in all_channels:
+                        await db.rem_channel(ch_id)
+                        await message.reply(f"<blockquote><b>✅ ᴄʜᴀɴɴᴇʟ ʀᴇᴍᴏᴠᴇᴅ:</b></blockquote>\n <code>{ch_id}</code>")
+                    else:
+                        await message.reply(f"<blockquote><b>❌ ᴄʜᴀɴɴᴇʟ ɴᴏᴛ ғᴏᴜɴᴅ:</b></blockquote>\n <code>{ch_id}</code>")
+                except ValueError:
+                    await message.reply(
+                        "<blockquote><b>ᴜꜱᴀɢᴇ:</b></blockquote>\n <code>/delchnl <channel_id | all</code>",
+                    )
+                except Exception as e:
+                    await message.reply(f"<blockquote><b>❌ ᴇʀʀᴏʀ:</b></blockquote>\n <code>{e}</code>")
+    except ValueError:
+        await message.reply("<blockquote><b>❌ ɪɴᴠ�.aʟɪᴅ ᴄʜᴀɴɴᴇʟ ɪᴅ!</b></blockquote>")
+    except Exception as e:
+        await message.reply(f"<blockquote><b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b></blockquote>\n<code>{message.text}</code>\n\n<i>{e}</i>")
+    finally:
+        await db.set_temp_state(chat_id, "")
 
 @Bot.on_message(filters.command('fsub_mode') & filters.private & admin)
 async def change_force_sub_mode(client: Client, message: Message):
@@ -251,12 +249,12 @@ async def change_force_sub_mode(client: Client, message: Message):
             title = f"{status} {chat.title}"
             buttons.append([InlineKeyboardButton(title, callback_data=f"rfs_ch_{ch_id}")])
         except:
-            buttons.append([InlineKeyboardButton(f"⚠️ {ch_id} (ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ)", callback_data=f"rfs_ch_{ch_id}")])
+            buttons.append([InlineKeyboardButton(f"⚠️ {ch_id} (ᴜɴᴀᴠ�.aɪʟᴀʙʟᴇ)", callback_data=f"rfs_ch_{ch_id}")])
 
     buttons.append([InlineKeyboardButton("ᴄʟᴏsᴇ ✖️", callback_data="close")])
 
     await temp.edit(
-        "<blockquote><b>⚡ sᴇʟᴇᴄᴛ ᴀ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴛᴏɢɢʟᴇ ғᴏʀᴄᴇ-sᴜʙ ᴍᴏᴅᴇ:</b></blockquote>",
+        "<blockquote><b>⚡ sᴇʟᴇᴄᴛ ᴀ ᴄʜ�.aɴɴᴇʟ ᴛᴏ ᴛᴏɢɢʟᴇ ғᴏʀᴄᴇ-sᴜʙ ᴍᴏᴅᴇ:</b></blockquote>",
         reply_markup=InlineKeyboardMarkup(buttons),
         disable_web_page_preview=True
     )
@@ -301,35 +299,35 @@ async def add_force_sub(client: Client, message: Message):
     try:
         channel_id = int(args[1])
     except ValueError:
-        return await temp.edit("<blockquote><b>❌ ɪɴᴠᴀʟɪᴅ ᴄʜᴀɴɴᴇʟ ɪᴅ!</b></blockquote>")
+        return await temp.edit("<blockquote><b>❌ ɪɴᴠ�.aʟɪᴅ ᴄʜ�.aɴɴᴇʟ ɪᴅ!</b></blockquote>")
 
     all_channels = await db.show_channels()
     channel_ids_only = [cid if isinstance(cid, int) else cid[0] for cid in all_channels]
     if channel_id in channel_ids_only:
-        return await temp.edit(f"<blockquote><b>ᴄʜᴀɴɴᴇʟ ᴀʟʀᴇᴀᴅʏ ᴇxɪsᴛs:</b></blockquote>\n <blockquote><code>{channel_id}</code></blockquote>")
+        return await temp.edit(f"<blockquote><b>ᴄʜ�.aɴɴᴇʟ ᴀʟʀᴇ�.aᴅʏ ᴇxɪsᴛs:</b></blockquote>\n <blockquote><code>{channel_id}</code></blockquote>")
 
     try:
         chat = await client.get_chat(channel_id)
 
         if chat.type != ChatType.CHANNEL:
-            return await temp.edit("<b>❌ ᴏɴʟʏ ᴘᴜʙʟɪᴄ ᴏʀ ᴘʀɪᴠᴀᴛᴇ ᴄʜᴀɴɴᴇʟs ᴀʀᴇ ᴀʟʟᴏᴡᴇᴅ.</b>")
+            return await temp.edit("<b>❌ ᴏɴʟʏ ᴘᴜʙʟɪᴄ ᴏʀ ᴘʀɪᴠ�.aᴛᴇ ᴄʜ�.aɴɴᴇʟs ᴀʀᴇ ᴀʟʟᴏᴡᴇᴅ.</b>")
 
         member = await client.get_chat_member(chat.id, "me")
         if member.status not in [ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
-            return await temp.edit("<b>❌ ʙᴏᴛ ᴍᴜsᴛ ʙᴇ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ᴛʜᴀᴛ ᴄʜᴀɴɴᴇʟ.</b>")
+            return await temp.edit("<b>❌ ʙᴏᴛ ᴍᴜsᴛ ʙᴇ ᴀɴ ᴀᴅᴍɪɴ ɪɴ ᴛʜ�.aᴛ ᴄʜ�.aɴɴᴇʟ.</b>")
 
         link = await client.export_chat_invite_link(chat.id) if not chat.username else f"https://t.me/{chat.username}"
         
         await db.add_channel(channel_id)
         return await temp.edit(
-            f"<blockquote><b>✅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟ ᴀᴅᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ!</b></blockquote>\n\n"
-            f"<blockquote><b>ɴᴀᴍᴇ:</b> <a href='{link}'>{chat.title}</a></blockquote>\n"
+            f"<blockquote><b>✅ ғᴏʀᴄᴇ-sᴜʙ ᴄʜ�.aɴɴᴇʟ �.aᴅᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ!</b></blockquote>\n\n"
+            f"<blockquote><b>ɴ�.aᴍᴇ:</b> <a href='{link}'>{chat.title}</a></blockquote>\n"
             f"<blockquote><b>ɪᴅ:</b></blockquote>\n <code>{channel_id}</code>",
             disable_web_page_preview=True
         )
 
     except Exception as e:
-        return await temp.edit(f"<blockquote><b>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴄʜᴀɴɴᴇʟ:</b></blockquote>\n<code>{channel_id}</code>\n\n<i>{e}</i>")
+        return await temp.edit(f"<blockquote><b>❌ ғ�.aɪʟᴇᴅ ᴛᴏ �.aᴅᴅ ᴄʜ�.aɴɴᴇʟ:</b></blockquote>\n<code>{channel_id}</code>\n\n<i>{e}</i>")
 
 @Bot.on_message(filters.command('delchnl') & filters.private & admin)
 async def del_force_sub(client: Client, message: Message):
@@ -340,28 +338,28 @@ async def del_force_sub(client: Client, message: Message):
     if len(args) < 2:
         buttons = [[InlineKeyboardButton("ᴄʟᴏsᴇ ✖️", callback_data="close")]]
         return await temp.edit(
-            "<blockquote><b>ᴜꜱᴀɢᴇ:</b></blockquote>\n <code>/delchnl <channel_id | all</code>",
+            "<blockquote><b>ᴜꜱ�.aɢᴇ:</b></blockquote>\n <code>/delchnl <channel_id | all</code>",
             reply_markup=InlineKeyboardMarkup(buttons)
         )
 
     if args[1].lower() == "all":
         if not all_channels:
-            return await temp.edit("<blockquote><b>❌ ɴᴏ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs ғᴏᴜɴᴅ.</b></blockquote>")
+            return await temp.edit("<blockquote><b>❌ ɴᴏ ғᴏʀᴄᴇ-sᴜʙ ᴄʜ�.aɴɴᴇʟs ғᴏᴜɴᴅ.</b></blockquote>")
         for ch_id in all_channels:
             await db.rem_channel(ch_id)
-        return await temp.edit("<blockquote><b>✅ ᴀʟʟ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs ʀᴇᴍᴏᴠᴇᴅ.</b></blockquote>")
+        return await temp.edit("<blockquote><b>✅ ᴀʟʟ ғᴏʀᴄᴇ-sᴜʙ ᴄʜ�.aɴɴᴇʟs ʀᴇᴍᴏᴠᴇᴅ.</b></blockquote>")
 
     try:
         ch_id = int(args[1])
         if ch_id in all_channels:
             await db.rem_channel(ch_id)
-            return await temp.edit(f"<blockquote><b>✅ ᴄʜᴀɴɴᴇʟ ʀᴇᴍᴏᴠᴇᴅ:</b></blockquote>\n <code>{ch_id}</code>")
+            return await temp.edit(f"<blockquote><b>✅ ᴄʜ�.aɴɴᴇʟ ʀᴇᴍᴏᴠᴇᴅ:</b></blockquote>\n <code>{ch_id}</code>")
         else:
-            return await temp.edit(f"<blockquote><b>❌ ᴄʜᴀɴɴᴇʟ ɴᴏᴛ ғᴏᴜɴᴅ:</b></blockquote>\n <code>{ch_id}</code>")
+            return await temp.edit(f"<blockquote><b>❌ ᴄʜ�.aɴɴᴇʟ ɴᴏᴛ ғᴏᴜɴᴅ:</b></blockquote>\n <code>{ch_id}</code>")
     except ValueError:
         buttons = [[InlineKeyboardButton("ᴄʟᴏsᴇ ✖️", callback_data="close")]]
         return await temp.edit(
-            "<blockquote><b>ᴜꜱᴀɢᴇ:</b></blockquote>\n <code>/delchnl <channel_id | all</code>",
+            "<blockquote><b>ᴜꜱ�.aɢᴇ:</b></blockquote>\n <code>/delchnl <channel_id | all</code>",
             reply_markup=InlineKeyboardMarkup(buttons)
         )
     except Exception as e:
@@ -369,27 +367,27 @@ async def del_force_sub(client: Client, message: Message):
 
 @Bot.on_message(filters.command('listchnl') & filters.private & admin)
 async def list_force_sub_channels(client: Client, message: Message):
-    temp = await message.reply("<b><i>ᴡᴀɪᴛ ᴀ sᴇᴄ..</i></b>", quote=True)
+    temp = await message.reply("<b><i>ᴡ�.aɪᴛ ᴀ sᴇᴄ..</i></b>", quote=True)
     channels = await db.show_channels()
 
     if not channels:
-        return await temp.edit("<blockquote><b>❌ ɴᴏ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs ғᴏᴜɴᴅ.</b></blockquote>")
+        return await temp.edit("<blockquote><b>❌ ɴᴏ ғᴏʀᴄᴇ-sᴜʙ ᴄʜ�.aɴɴᴇʟs ғᴏᴜɴᴅ.</b></blockquote>")
 
-    result = "<blockquote><b>⚡ ғᴏʀᴄᴇ-sᴜʙ ᴄʜᴀɴɴᴇʟs:</b></blockquote>\n\n"
+    result = "<blockquote><b>⚡ ғᴏʀᴄᴇ-sᴜʙ ᴄʜ�.aɴɴᴇʟs:</b></blockquote>\n\n"
     for ch_id in channels:
         try:
             chat = await client.get_chat(ch_id)
             link = await client.export_chat_invite_link(ch_id) if not chat.username else f"https://t.me/{chat.username}"
             result += f"<b>•</b> <a href='{link}'>{chat.title}</a> [<code>{ch_id}</code>]\n"
         except Exception:
-            result += f"<b>•</b> <code>{ch_id}</code> — <i>ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ</i>\n"
+            result += f"<b>•</b> <code>{ch_id}</code> — <i>ᴜɴ�.aᴠ.aɪʟ.aʙʟᴇ</i>\n"
 
     buttons = [[InlineKeyboardButton("ᴄʟᴏsᴇ ✖️", callback_data="close")]]
     await temp.edit(
         result, 
         disable_web_page_preview=True, 
         reply_markup=InlineKeyboardMarkup(buttons)
-)
+    )
 
 #
 # Copyright (C) 2025 by AnimeLord-Bots@Github, < https://github.com/AnimeLord-Bots >.
