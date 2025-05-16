@@ -40,7 +40,7 @@ class Bot(Client):
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
 
-        # Initialize settings from database
+        # Load settings from database
         global PROTECT_CONTENT, HIDE_CAPTION, DISABLE_CHANNEL_BUTTON, BUTTON_NAME, BUTTON_LINK
         settings = await db.get_settings()
         PROTECT_CONTENT = settings.get('PROTECT_CONTENT', False)
@@ -87,9 +87,9 @@ class Bot(Client):
         loop.run_until_complete(self.start())
         self.LOGGER(__name__).info(f"ʙᴏᴛ ɪs ɴᴏᴡ ᴀʟɪᴠᴇ. ᴛʜᴀɴᴋs ᴛᴏ @ᴡʜᴏ-ᴀᴍ-ɪ")
         self.LOGGER(__name__).info(f"""
-▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀
+▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
 |------------------『A N I M E  L O R D』----------------------|
-▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
+▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀
                ◈◈◈◈◈◈ ɪ_s_ᴀ_ʟ_ɪ_ᴠ_ᴇ ◈◈◈◈◈◈  
                        ▼   ᴀᴄᴄᴇssɪɴɢ   ▼  
                          ███████] 99%  
