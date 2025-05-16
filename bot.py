@@ -17,7 +17,7 @@ import sys
 from datetime import datetime
 #ᴀɴɪᴍᴇ ʟᴏʀᴅ
 from config import *
-from database import db
+from database.database import db  # Updated import
 
 name = """『A N I M E _ L O R D』"""
 
@@ -87,9 +87,9 @@ class Bot(Client):
         loop.run_until_complete(self.start())
         self.LOGGER(__name__).info(f"ʙᴏᴛ ɪs ɴᴏᴡ ᴀʟɪᴠᴇ. ᴛʜᴀɴᴋs ᴛᴏ @ᴡʜᴏ-ᴀᴍ-ɪ")
         self.LOGGER(__name__).info(f"""
-▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
+▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀
 |------------------『A N I M E  L O R D』----------------------|
-▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀
+▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
                ◈◈◈◈◈◈ ɪ_s_ᴀ_ʟ_ɪ_ᴠ_ᴇ ◈◈◈◈◈◈  
                        ▼   ᴀᴄᴄᴇssɪɴɢ   ▼  
                          ███████] 99%  
