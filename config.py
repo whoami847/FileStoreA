@@ -13,6 +13,7 @@ from os import environ, getenv
 import logging
 from logging.handlers import RotatingFileHandler
 from pyrogram import filters
+from database import db
 
 # MehediYT69
 # --------------------------------------------
@@ -89,7 +90,7 @@ CMD_TXT = """<blockquote><b>» ᴀᴅᴍɪɴ ᴄᴏᴍᴍᴀɴᴅs:</b></blockqu
 <b>›› /delchnl :</b> ʀᴇᴍᴏᴠᴇ ꜰᴏʀᴄᴇ sᴜʙ ᴄʜᴀɴɴᴇʟ
 <b>›› /listchnl :</b> ᴠɪᴇᴡ ᴀᴅᴅᴇᴅ ᴄʜᴀɴɴᴇʟs
 <b>›› /fsub_mode :</b> ᴛᴏɢɢʟᴇ ꜰᴏʀᴄᴇ sᴜʙ ᴍᴏᴅᴇ
-<b>›› /pbroadcast :</b> sᴇɴᴅ ᴘʜᴏᴛᴏ ᴛᴏ ᴀʟʟ ᴜꜱᴇʀs
+<b>›› /pbroadcast :</b> sᴇɴᴅ ᴘʜᴏᴛᴏ ᴛᴏ ᴀʟʟ ᴜsᴇʀs
 <b>›› /add_admin :</b> ᴀᴅᴅ ᴀɴ ᴀᴅᴍɪɴ
 <b>›› /deladmin :</b> ʀᴇᴍᴏᴠᴇ ᴀɴ ᴀᴅᴍɪɴ
 <b>›› /admins :</b> ɢᴇᴛ ʟɪsᴛ ᴏꜰ ᴀᴅᴍɪɴs
@@ -104,10 +105,8 @@ CMD_TXT = """<blockquote><b>» ᴀᴅᴍɪɴ ᴄᴏᴍᴍᴀɴᴅs:</b></blockqu
 <b>›› /restart :</b> ʀᴇsᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ"""
 
 CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", "<b>• ʙʏ @Anime_Lord_Official</b>")
-PROTECT_CONTENT = True if os.environ.get('PROTECT_CONTENT', "False") == "True" else False
 # --------------------------------------------
 # Set true if you want Disable your Channel Posts Share button
-DISABLE_CHANNEL_BUTTON = os.environ.get("DISABLE_CHANNEL_BUTTON", None) == 'True'
 # --------------------------------------------
 BOT_STATS_TEXT = "<b>BOT FUCKTIME</b>\n{uptime}"
 USER_REPLY_TEXT = "ʙᴀᴋᴋᴀ ! ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ꜱᴇɴᴘᴀɪ!!"
@@ -131,6 +130,41 @@ PRICE4 = os.environ.get("PRICE4", "280 rs")
 PRICE5 = os.environ.get("PRICE5", "550 rs")
 
 # ====================(END)========================#
+
+# Load settings from database
+settings = db.get_settings()  # This is an async call, so we'll handle it in bot.py
+
+PROTECT_CONTENT = settings.get('PROTECT_CONTENT', False)
+HIDE_CAPTION = settings.get('HIDE_CAPTION', False)
+DISABLE_CHANNEL_BUTTON = settings.get('DISABLE_CHANNEL_BUTTON', True)
+BUTTON_NAME = settings.get('BUTTON_NAME', None)
+BUTTON_LINK = settings.get('BUTTON_LINK', None)
+
+# Function to update settings (used by file_settings.py)
+async def update_setting(setting_name, value):
+    await db.update_setting(setting_name, value)
+    # Update local variables (optional, for immediate use)
+    global PROTECT_CONTENT, HIDE_CAPTION, DISABLE_CHANNEL_BUTTON, BUTTON_NAME, BUTTON_LINK
+    if setting_name == "PROTECT_CONTENT":
+        PROTECT_CONTENT = value
+    elif setting_name == "HIDE_CAPTION":
+        HIDE_CAPTION = value
+    elif setting_name == "DISABLE_CHANNEL_BUTTON":
+        DISABLE_CHANNEL_BUTTON = value
+    elif setting_name == "BUTTON_NAME":
+        BUTTON_NAME = value
+    elif setting_name == "BUTTON_LINK":
+        BUTTON_LINK = value
+
+# Function to get all settings (used to display in /fsettings)
+def get_settings():
+    return {
+        "PROTECT_CONTENT": PROTECT_CONTENT,
+        "HIDE_CAPTION": HIDE_CAPTION,
+        "DISABLE_CHANNEL_BUTTON": DISABLE_CHANNEL_BUTTON,
+        "BUTTON_NAME": BUTTON_NAME,
+        "BUTTON_LINK": BUTTON_LINK
+    }
 
 LOG_FILE_NAME = "animelordbot.txt"
 
