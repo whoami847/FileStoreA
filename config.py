@@ -13,7 +13,7 @@ from os import environ, getenv
 import logging
 from logging.handlers import RotatingFileHandler
 from pyrogram import filters
-from database import db
+from database.database import db  # Updated import
 
 # MehediYT69
 # --------------------------------------------
@@ -95,7 +95,7 @@ CMD_TXT = """<blockquote><b>» ᴀᴅᴍɪɴ ᴄᴏᴍᴍᴀɴᴅs:</b></blockqu
 <b>›› /deladmin :</b> ʀᴇᴍᴏᴠᴇ ᴀɴ ᴀᴅᴍɪɴ
 <b>›› /admins :</b> ɢᴇᴛ ʟɪsᴛ ᴏꜰ ᴀᴅᴍɪɴs
 <b>›› /addpremium :</b> ᴀᴅᴅ ᴀ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀ
-<b>›› /delpremium :</b> ʀᴇᴍᴏᴠᴇ ᴀ ᴘʀᴇᴍɪᴜᴮ ᴜꜱᴇʀ
+<b>›› /delpremium :</b> ʀᴇᴍᴏᴠᴇ ᴀ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀ
 <b>›› /premiumusers :</b> ɢᴇᴛ ʟɪsᴛ ᴏꜰ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀs
 <b>›› /broadcast :</b> ʙʀᴏᴀᴅᴄᴀsᴛ ᴍᴇssᴀɢᴇ ᴛᴏ ᴀʟʟ ᴜꜱᴇʀs
 <b>›› /stats :</b> ɢᴇᴛ ʙᴏᴛ sᴛᴀᴛs
